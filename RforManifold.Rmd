@@ -1,0 +1,14 @@
+## Examples
+
+* illustrate this example in both  R and Manifold 
+
+https://github.com/mdsumner/talks/blob/master/SQL_3/SQL_3.rmd
+
+* dig up the RODBC reader https://github.com/mdsumner/mdsutils/blob/master/R/odbcReadManifold.R
+
+* get rClr working with Manifold
+
+* parallel CGAL triangulation code with Manifold's DecomposeToTrianglesAdv
+
+
+
