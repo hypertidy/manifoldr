@@ -24,6 +24,7 @@ library(raster) ## just for nice print methods for sp objects
 source("https://raw.githubusercontent.com/mdsumner/mdsutils/master/R/odbcReadManifold.R")
 
 ## open a connection to a map file
+## remember, this file has Local Scale 0.0001
 con <- odbcConnectManifold("E:\\DATA\\Manifold\\ManifoldCD\\Data\\World\\Medium Resolution\\World Provinces.map")
 ## list the available tables if needed
 ##sqlTables(con)
@@ -41,6 +42,7 @@ close(con)
 Rsp <- readWKB(ProvincesGeom$geom)
 
 ## reconstruct our original layer
+## remember, this file has Local Scale 0.0001
 Countries <- SpatialPolygonsDataFrame(Rsp, subset(ProvincesGeom, select = c("ID", "Country", "Province")))
 Countries
 #class       : SpatialPolygonsDataFrame 
