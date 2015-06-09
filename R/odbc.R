@@ -1,13 +1,13 @@
 #' ODBC connection to Manifold map files.
 #' 
-#' Create a 
+#' Create an ODBC connection for Manifold GIS. 
+#' 
 #' See \code{\link[RODBC]{odbcDriverConnect}}
 #' @param mapfile 
 #'
-#' @return 
+#' @return RODBC object
+## @importFrom RODBC odbcDriverConnect
 #' @export
-#' @importFrom RODBC odbcDriverConnect
-#' @examples
 odbcConnectManifold <- function (mapfile)
   
 {

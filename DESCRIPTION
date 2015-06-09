@@ -4,6 +4,7 @@ Version: 0.0.0.9000
 Authors@R: person("Michael", "Sumner", email = "mdsumner@gmail.com", role = c("aut", "cre"))
 Description: Manifold GIS from R
 Depends: R (>= 3.2.0)
+Suggests: RODBC
 License: GPL-3
 LazyData: true
 SystemRequirements: Manifold System GIS

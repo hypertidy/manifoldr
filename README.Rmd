@@ -51,25 +51,23 @@ https://github.com/mdsumner/talks/blob/master/SQL_3/SQL_3.rmd
 
 We can read from Manifold map files using a bit of SQL and the wkb R package. 
 
-```{r,eval=FALSE}
+```{r,message=FALSE}
 ## extensions we need
 library(wkb)    ## for parsing WKB blobs as Spatial R objects
 library(sp)     ## Spatial R objects
 library(RODBC)  ## ODBC in R
 library(raster) ## just for nice print methods for sp objects
-## pull in the odbcConnectManifold function
-source("https://raw.githubusercontent.com/mdsumner/mdsutils/master/R/odbcReadManifold.R")
-
+library(RforManifold)
 ## open a connection to a map file
-## remember, this file has Local Scale 0.0001
-con <- odbcConnectManifold("E:\\DATA\\Manifold\\ManifoldCD\\Data\\World\\Medium Resolution\\World Provinces.map")
+## original  file has Local Scale 0.0001, so I use a modified copy "Provinces_"
+con <- odbcConnectManifold("E:\\ManifoldDVD\\Data\\World\\Medium Resolution\\World Provinces.map")
 ## list the available tables if needed
 ##sqlTables(con)
 
 ## read in just the ID and the Geom (I) as WKB 
 ## (Manifold's Geom includes the CRS so we cast to OGC using CGeomWKB)
 ## remember this is just a data.frame
-ProvincesGeom <- sqlQuery(con, "SELECT [ID], [Country], [Province], CGeomWKB(Geom(ID)) AS [geom] FROM [Provinces] WHERE [Longitude (I)] > 100 AND [Latitude (I)] < 0")
+ProvincesGeom <- sqlQuery(con, "SELECT [ID], [Country], [Province], CGeomWKB(Geom(ID)) AS [geom] FROM [Provinces_] WHERE [Longitude (I)] > 100 AND [Latitude (I)] < 0")
 ## get the CRS (somehow)
 ## . . .
 close(con)
@@ -79,17 +77,10 @@ close(con)
 Rsp <- readWKB(ProvincesGeom$geom)
 
 ## reconstruct our original layer
-## remember, this file has Local Scale 0.0001
 Countries <- SpatialPolygonsDataFrame(Rsp, subset(ProvincesGeom, select = c("ID", "Country", "Province")))
 Countries
-#class       : SpatialPolygonsDataFrame 
-#features    : 3453 
-#extent      : 991389, 1800000, -783533, 20833  (xmin, xmax, ymin, ymax)
-#coord. ref. : NA 
-#variables   : 3
-#names       :     ID, Country,                Province 
-#min values  : 262126,        ,              Antarctica 
-#max values  : 316877,  Tuvalu, Yogyakarta [Jogjakarta] 
+
+plot(Countries)
 devtools::session_info()
 ```
 
