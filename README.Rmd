@@ -1,22 +1,39 @@
+---
+title: "R for Manifold"
+author: "Michael Sumner"
+date: 2015-06-09
+output:
+  md_document:
+    variant: markdown_github
+---
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-Examples
---------
 
--   illustrate this example in both R and Manifold
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
 
-<https://github.com/mdsumner/talks/blob/master/SQL_3/SQL_3.rmd>
+## Examples
 
--   dig up the RODBC reader <https://github.com/mdsumner/mdsutils/blob/master/R/odbcReadManifold.R>
+* illustrate this example in both  R and Manifold 
 
--   get rClr working with Manifold
+https://github.com/mdsumner/talks/blob/master/SQL_3/SQL_3.rmd
 
--   parallel CGAL triangulation code with Manifold's DecomposeToTrianglesAdv
+* dig up the RODBC reader https://github.com/mdsumner/mdsutils/blob/master/R/odbcReadManifold.R
+
+* get rClr working with Manifold
+
+* parallel CGAL triangulation code with Manifold's DecomposeToTrianglesAdv
 
 ### Manifold geometry via RODBC
 
-We can read from Manifold map files using a bit of SQL and the wkb R package.
+We can read from Manifold map files using a bit of SQL and the wkb R package. 
 
-``` r
+```{r,eval=FALSE}
 ## extensions we need
 library(wkb)    ## for parsing WKB blobs as Spatial R objects
 library(sp)     ## Spatial R objects
@@ -57,3 +74,4 @@ Countries
 #max values  : 316877,  Tuvalu, Yogyakarta [Jogjakarta] 
 devtools::session_info()
 ```
+
