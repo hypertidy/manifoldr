@@ -16,6 +16,24 @@ knitr::opts_chunk$set(
   fig.path = "README-"
 )
 ```
+# R for Manifold
+
+Manifold GIS and R make for a powerful partnership, but the coupling between them has been relatively loose and sketchy. 
+
+Two key recent R packages make the coupling more compelling:
+
+* [wkb](http://cran.rstudio.com/web/packages/wkb/index.html): Convert Between Spatial Objects and Well-Known Binary (WKB) Geometry
+* [rClr](https://rclr.codeplex.com)
+
+The main ways we connect R and Manifold are 1) read drawing layers with data from Manifold .map files via SQL queries
+2) drive the Manifold API directly via .Net. 
+
+The first provides a pretty tight mapping of high-level data types, i.e. in Manifold we have a drawing and in R we have a Spatial layer and moving from one to the other is easy. 
+
+The second provides a lot more power but we need to do more work to transfer data between the systems. 
+
+There are lots of other pathways, including GDAL as a third/fourth party and via file transfer. 
+
 
 ## Examples
 
