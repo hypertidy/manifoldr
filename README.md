@@ -26,7 +26,7 @@ Examples
 
 -   dig up the RODBC reader <https://github.com/mdsumner/mdsutils/blob/master/R/odbcReadManifold.R>
 
--   get rClr working with Manifold
+-   get rClr working with Manifold: install from here <https://github.com/jmp75/rClr>
 
 -   parallel CGAL triangulation code with Manifold's DecomposeToTrianglesAdv
 
