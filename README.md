@@ -1,6 +1,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-R for Manifold
+R for Manifold Lifers
 ==============
+
+NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
 
 Manifold GIS and R make for a powerful partnership, but the coupling between them has been relatively loose and sketchy.
 
@@ -54,7 +56,7 @@ library(raster) ## just for nice print methods for sp objects
 #> Note: no visible binding for global variable 'plotOrder' 
 #> Note: no visible binding for global variable 'plotOrder' 
 #> Note: no visible binding for global variable 'coords'
-library(RforManifold)
+library(manifoldr)
 ## open a connection to a map file
 ## original  file has Local Scale 0.0001, so I use a modified copy "Provinces_"
 con <- odbcConnectManifold("E:\\ManifoldDVD\\Data\\World\\Medium Resolution\\World Provinces.map")
