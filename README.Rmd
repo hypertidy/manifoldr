@@ -1,5 +1,5 @@
 ---
-title: "R for Manifold"
+title: "R for Manifold Lifers"
 author: "Michael Sumner"
 date: 2015-06-09
 output:
@@ -17,6 +17,9 @@ knitr::opts_chunk$set(
 )
 ```
 # R for Manifold
+
+NOTE: this will be merged with mdsumnner/dplrodbc in some way.  Was originally called RforManifold. 
+
 
 Manifold GIS and R make for a powerful partnership, but the coupling between them has been relatively loose and sketchy. 
 
@@ -57,7 +60,7 @@ library(wkb)    ## for parsing WKB blobs as Spatial R objects
 library(sp)     ## Spatial R objects
 library(RODBC)  ## ODBC in R
 library(raster) ## just for nice print methods for sp objects
-library(RforManifold)
+library(manifoldr)
 ## open a connection to a map file
 ## original  file has Local Scale 0.0001, so I use a modified copy "Provinces_"
 con <- odbcConnectManifold("E:\\ManifoldDVD\\Data\\World\\Medium Resolution\\World Provinces.map")
