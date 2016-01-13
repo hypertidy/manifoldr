@@ -4,12 +4,19 @@
 R for Manifold
 ==============
 
-Installation
-------------
+## Installation
 
-``` r
+`manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package. 
+
+```R
+if (packageVersion("devtools") < 1.6) {
+  install.packages("devtools")
+}
 devtools::install_github("mdsumner/manifoldr")
 ```
+
+(Future versions may become available on CRAN. )
+
 
 Basic Usage
 -----------
