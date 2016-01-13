@@ -49,16 +49,6 @@ There are lots of other pathways, including GDAL as a third/fourth party and via
 Examples
 --------
 
--   illustrate this example in both R and Manifold
-
-<https://github.com/mdsumner/talks/blob/master/SQL_3/SQL_3.rmd>
-
--   dig up the RODBC reader <https://github.com/mdsumner/mdsutils/blob/master/R/odbcReadManifold.R>
-
--   get rClr working with Manifold: install from here <https://github.com/jmp75/rClr>
-
--   parallel CGAL triangulation code with Manifold's DecomposeToTrianglesAdv
-
 ### Manifold geometry via RODBC
 
 We can read from Manifold map files using a bit of SQL and the wkb R package.
@@ -141,3 +131,18 @@ devtools::session_info()
 #>  wkb       * 0.2-0      2015-09-28 CRAN (R 3.2.3)                 
 #>  yaml        2.1.13     2014-06-12 CRAN (R 3.2.3)
 ```
+
+TODO
+----
+
+-   illustrate this example in both R and Manifold
+
+<https://github.com/mdsumner/talks/blob/master/SQL_3/SQL_3.rmd>
+
+-   dig up the RODBC reader <https://github.com/mdsumner/mdsutils/blob/master/R/odbcReadManifold.R>
+
+-   get rClr working with Manifold: install from here <https://github.com/jmp75/rClr>
+
+-   parallel CGAL triangulation code with Manifold's DecomposeToTrianglesAdv
+
+-   <https://github.com/mdsumner/dplyrodbc>
