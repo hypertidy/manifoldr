@@ -17,6 +17,7 @@
 #'      BranchCount([ID]) AS [nbranches] FROM [Drawing Table]"
 #' sq <- RODBC::sqlQuery(con, qtx)
 #' sq
+#'
 #' }
 #' @return RODBC object
 #' @importFrom RODBC odbcDriverConnect
