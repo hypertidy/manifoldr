@@ -58,7 +58,6 @@ odbcConnectManifold <- function (mapfile)
 }
 
 
-
 #' @importFrom RODBC sqlQuery
 manifoldCRS <- function(connection, componentname) {
   RODBC::sqlQuery(connection, sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys("%s" AS COMPONENT)) AS [CRS] FROM [%s]', componentname, componentname), stringsAsFactors = FALSE)$CRS

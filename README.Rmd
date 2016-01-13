@@ -23,6 +23,27 @@ knitr::opts_chunk$set(
 ```
 # R for Manifold
 
+## Installation
+
+```R
+devtools::install_github("mdsumner/manifoldr")
+```
+
+## Basic Usage
+
+Open a connection to a .map file an issue a query.  
+
+```R
+library(manifoldr)
+library(RODBC)
+con <- odbcConnectManifold("E:\\ManifoldDVD\\Data\\World\\Medium Resolution\\World Provinces.map")
+Provinces <- sqlQuery(con, "SELECT [ID], [Country], [Province]
+                                FROM [Provinces_] WHERE [Longitude (I)] > 100 AND [Latitude (I)] < 0")
+close(con)
+
+```
+
+All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available. 
 NOTE: this will be merged with mdsumnner/dplrodbc in some way.  Was originally called RforManifold. 
 
 
