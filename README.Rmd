@@ -25,7 +25,12 @@ knitr::opts_chunk$set(
 
 ## Installation
 
+`manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package to obtain the package and installation. 
+
 ```R
+if (packageVersion("devtools") < 1.6) {
+  install.packages("devtools")
+}
 devtools::install_github("mdsumner/manifoldr")
 ```
 
