@@ -1,5 +1,10 @@
+[![Travis-CI Build Status](https://travis-ci.org/mdsumner/manifoldr.svg?branch=master)](https://travis-ci.org/mdsumner/manifoldr)
+[![](http://www.r-pkg.org/badges/version/manifoldr)](http://www.r-pkg.org/pkg/manifoldr)
+[![](http://cranlogs.r-pkg.org/badges/manifoldr)](http://www.r-pkg.org/pkg/manifoldr)
+
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-R for Manifold Lifers
+R for Manifold 
 ==============
 
 NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
