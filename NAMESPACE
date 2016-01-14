@@ -5,6 +5,7 @@ if ( packageVersion("rgdal") >= "1.1.4") {
 importFrom("rgdal", showP4)
 }
 export(odbcConnectManifold)
+importFrom(RODBC,odbcClose)
 importFrom(RODBC,odbcDriverConnect)
 importFrom(RODBC,sqlQuery)
 importFrom(maptools,spRbind)
