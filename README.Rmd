@@ -1,7 +1,4 @@
 ---
-title: "R for Manifold Lifers"
-author: "Michael Sumner"
-date: 2015-06-09
 output:
   md_document:
     variant: markdown_github
