@@ -1,8 +1,9 @@
 #' @importFrom RODBC odbcClose
-checkAvailability <- function() {
+checkAvailability <- function(fakefail = FALSE) {
   fl <- sample(instmapfiles(), 1L)
-  res <- try(odbcConnectManifold(fl))
-  if (inherits(res, "try-error")) {
+  if (fakefail) fl <- "nosuchfile.RARAmoopdobbBingBamBIFF"
+  res <- suppressWarnings(odbcConnectManifold(fl))
+  if (res < 0) {
     message("Manifold does not seem to be installed, so functionality is limited.")
     return(FALSE)
   } else {
