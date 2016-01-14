@@ -4,4 +4,5 @@ language: r
 warnings_are_errors: true
 sudo: required
 apt_packages:
+  - r-base-dev
   - r-cran-rodbc  
