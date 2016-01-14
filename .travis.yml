@@ -30,6 +30,6 @@ env:
     - RVERSION=devel
 
 ## manifoldr specific
-#apt_packages:
-#  - r-base-dev
-#  - r-cran-rodbc  
+apt_packages:
+  - r-base-dev
+  - r-cran-rodbc  
