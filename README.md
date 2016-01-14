@@ -1,5 +1,3 @@
-[![Travis-CI Build Status](https://travis-ci.org/mdsumner/manifoldr.svg?branch=master)](https://travis-ci.org/mdsumner/manifoldr) [![](http://www.r-pkg.org/badges/version/manifoldr)](http://www.r-pkg.org/pkg/manifoldr) [![](http://cranlogs.r-pkg.org/badges/manifoldr)](http://www.r-pkg.org/pkg/manifoldr)
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 manifoldr
 =========
@@ -24,7 +22,6 @@ Problems
 --------
 
 -   Large Geoms and other binary types are stored as the `ODBC_binary` type from the `RODBC` package. Be careful with these columns as they do not have compact printing methods. This is something to added to a future version of this package.
--   If the travis-CI badge above says the build is failing, it's probably because RODBC is a non-standard dependency on Travis systems. It runs fine if you can install Manifold and the RODBC package.
 
 Basic Usage
 -----------
