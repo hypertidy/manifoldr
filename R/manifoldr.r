@@ -59,6 +59,11 @@ odbcConnectManifold <- function (mapfile)
 }
 
 
+readmfd <- function(dsn, table, query = NULL) {
+  if (!checkAvailability()) warning("Manifold is not installed, but is required for connection to project files.")
+  NULL
+}
+
 #' @importFrom RODBC sqlQuery
 manifoldCRS <- function(connection, componentname) {
   RODBC::sqlQuery(connection, sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys("%s" AS COMPONENT)) AS [CRS] FROM [%s]', componentname, componentname), stringsAsFactors = FALSE)$CRS
@@ -68,6 +73,7 @@ manifoldCRS <- function(connection, componentname) {
 #' if ( packageVersion("rgdal") >= "1.1.4") {
 #' importFrom("rgdal", showP4)
 #' }
+#' @importFrom utils packageVersion
 #' @importFrom rgdal writeOGR readOGR
 #' @importFrom sp proj4string SpatialPoints SpatialPointsDataFrame
 wktCRS2proj4 <- function(CRS) {
@@ -84,6 +90,7 @@ wktCRS2proj4 <- function(CRS) {
   
 }
 
+#' @importFrom methods is
 #' @importFrom rgeos readWKT
 #' @importFrom maptools spRbind
 #' @importFrom sp SpatialPolygonsDataFrame
