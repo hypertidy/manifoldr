@@ -1,6 +1,6 @@
 Package: manifoldr
 Title: Facilities for Manifold System 
-Version: 0.0.3
+Version: 0.0.3.9000
 Authors@R: person("Michael", "Sumner", email = "mdsumner@gmail.com", role = c("aut", "cre"))
 Description: Connect to and read from Manifold System (a Geographic Information System). 
 Depends: 
