@@ -10,7 +10,6 @@ output:
 
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -18,11 +17,11 @@ knitr::opts_chunk$set(
   fig.path = "README-"
 )
 ```
-# R for Manifold
+# manifoldr
 
 ## Installation
 
-1) `manifoldr` relies on [Manifold System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working. 
+1) `manifoldr` relies on [Manifold® System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working. 
 
 2) `manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package. 
 

@@ -1,13 +1,13 @@
 [![Travis-CI Build Status](https://travis-ci.org/mdsumner/manifoldr.svg?branch=master)](https://travis-ci.org/mdsumner/manifoldr) [![](http://www.r-pkg.org/badges/version/manifoldr)](http://www.r-pkg.org/pkg/manifoldr) [![](http://cranlogs.r-pkg.org/badges/manifoldr)](http://www.r-pkg.org/pkg/manifoldr)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-R for Manifold
-==============
+manifoldr
+=========
 
 Installation
 ------------
 
-1.  `manifoldr` relies on [Manifold System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working.
+1.  `manifoldr` relies on [Manifold® System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working.
 
 2.  `manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package.
 
