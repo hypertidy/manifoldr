@@ -1,13 +1,14 @@
 Package: manifoldr
-Title: Facilities for Manifold GIS
-Version: 0.0.2.9000
+Title: Facilities for Manifold System 
+Version: 0.0.3
 Authors@R: person("Michael", "Sumner", email = "mdsumner@gmail.com", role = c("aut", "cre"))
-Description: Connect to and read from Manifold GIS. 
-Depends:
+Description: Connect to and read from Manifold System (a Geographic Information System). 
+Depends: 
     R (>= 3.2.0)
-Imports:
-    RODBC, maptools, rgdal, rgeos, sp
+Imports: 
+    RODBC, maptools, methods, rgdal, rgeos, sp
 License: GPL-3
 LazyData: true
-SystemRequirements: A Manifold System installation. 
+SystemRequirements: A Manifold System installation (http://www.manifold.net/). 
 RoxygenNote: 5.0.1
+Suggests: testthat

@@ -1,28 +1,49 @@
-[![Travis-CI Build Status](https://travis-ci.org/mdsumner/manifoldr.svg?branch=master)](https://travis-ci.org/mdsumner/manifoldr) [![](http://www.r-pkg.org/badges/version/manifoldr)](http://www.r-pkg.org/pkg/manifoldr) [![](http://cranlogs.r-pkg.org/badges/manifoldr)](http://www.r-pkg.org/pkg/manifoldr)
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-R for Manifold
-==============
+manifoldr
+=========
 
 Installation
 ------------
 
+1.  `manifoldr` relies on [Manifold® System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working.
+
+2.  `manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package.
+
 ``` r
+if (packageVersion("devtools") < 1.6) {
+  install.packages("devtools")
+}
 devtools::install_github("mdsumner/manifoldr")
 ```
+
+(Future versions may become available on CRAN. )
+
+Problems
+--------
+
+-   Large Geoms and other binary types are stored as the `ODBC_binary` type from the `RODBC` package. Be careful with these columns as they do not have compact printing methods. This is something to added to a future version of this package.
 
 Basic Usage
 -----------
 
-Open a connection to a .map file an issue a query.
+Open a connection to a built-in .map file and issue a query.
 
 ``` r
 library(manifoldr)
 library(RODBC)
-con <- odbcConnectManifold("E:\\ManifoldDVD\\Data\\World\\Medium Resolution\\World Provinces.map")
-Provinces <- sqlQuery(con, "SELECT [ID], [Country], [Province]
-                                FROM [Provinces_] WHERE [Longitude (I)] > 100 AND [Latitude (I)] < 0")
+mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+con <- odbcConnectManifold(mapfile)
+tab <- sqlQuery(con, "SELECT [ID], [Name], BranchCount([ID]) AS [nBranch] FROM [Drawing] ORDER BY [nBranch]")
 close(con)
+
+print(tab)
+#>   ID Name nBranch
+#> 1 10    L       1
+#> 2 11    E       1
+#> 3 12    G       1
+#> 4 13    I       1
+#> 5 15    N       1
+#> 6 14    O       2
 ```
 
 All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available. NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
@@ -81,55 +102,9 @@ Rsp <- readWKB(ProvincesGeom$geom)
 ## reconstruct our original layer
 Countries <- SpatialPolygonsDataFrame(Rsp, subset(ProvincesGeom, select = c("ID", "Country", "Province")))
 Countries
-#> class       : SpatialPolygonsDataFrame 
-#> features    : 3453 
-#> extent      : 99.1389, 180, -78.3533, 2.0833  (xmin, xmax, ymin, ymax)
-#> coord. ref. : NA 
-#> variables   : 3
-#> names       :     ID, Country,                Province 
-#> min values  : 359690,        ,              Antarctica 
-#> max values  : 392515,  Tuvalu, Yogyakarta [Jogjakarta]
 
 plot(Countries)
-```
-
-![](README-unnamed-chunk-2-1.png)
-
-``` r
 devtools::session_info()
-#>  setting  value                                      
-#>  version  R version 3.2.3 Patched (2015-12-22 r69809)
-#>  system   x86_64, mingw32                            
-#>  ui       RTerm                                      
-#>  language (EN)                                       
-#>  collate  English_Australia.1252                     
-#>  tz       Australia/Hobart                           
-#>  date     2016-01-14                                 
-#> 
-#>  package   * version    date       source                         
-#>  devtools    1.9.1      2015-09-11 CRAN (R 3.2.3)                 
-#>  digest      0.6.9      2016-01-08 CRAN (R 3.2.3)                 
-#>  evaluate    0.8        2015-09-18 CRAN (R 3.2.3)                 
-#>  foreign     0.8-66     2015-08-19 CRAN (R 3.2.3)                 
-#>  formatR     1.2.1      2015-09-18 CRAN (R 3.2.3)                 
-#>  htmltools   0.3        2015-12-29 CRAN (R 3.2.3)                 
-#>  knitr       1.12.1     2016-01-11 Github (yihui/knitr@f610bc5)   
-#>  lattice     0.20-33    2015-07-14 CRAN (R 3.2.3)                 
-#>  magrittr    1.5        2014-11-22 CRAN (R 3.2.3)                 
-#>  manifoldr * 0.0.2.9000 2016-01-13 local                          
-#>  maptools    0.8-37     2015-09-29 CRAN (R 3.2.3)                 
-#>  memoise     0.2.1      2014-04-22 CRAN (R 3.2.3)                 
-#>  raster    * 2.5-2      2015-12-19 CRAN (R 3.2.3)                 
-#>  Rcpp        0.12.2     2015-11-15 CRAN (R 3.2.3)                 
-#>  rgdal       1.1-4      2016-01-05 local                          
-#>  rgeos       0.3-15     2015-11-04 CRAN (R 3.2.3)                 
-#>  rmarkdown   0.9.2      2016-01-01 CRAN (R 3.2.3)                 
-#>  RODBC     * 1.3-12     2015-06-29 CRAN (R 3.2.3)                 
-#>  sp        * 1.2-1      2015-10-18 CRAN (R 3.2.3)                 
-#>  stringi     1.0-1      2015-10-22 CRAN (R 3.2.3)                 
-#>  stringr     1.0.0.9000 2016-01-11 Github (hadley/stringr@a67f8f0)
-#>  wkb       * 0.2-0      2015-09-28 CRAN (R 3.2.3)                 
-#>  yaml        2.1.13     2014-06-12 CRAN (R 3.2.3)
 ```
 
 TODO

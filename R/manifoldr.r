@@ -59,17 +59,36 @@ odbcConnectManifold <- function (mapfile)
 }
 
 
+
+readmfd <- function(dsn, table, query = NULL) {
+  if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
+  con <- odbcConnectManifold(dsn)
+  if (is.null(query)) {
+    query <- sprintf("SELECT * FROM [%s]", table)
+  }
+ x <-  RODBC::sqlQuery(con, query)
+}
+
+read_area <- function(mapfile, dwgname) {
+  query <- sprintf("SELECT [ID] FROM [%s] WHERE [Type (I)] = \"Area\"", dwgname)
+  readmfd(mapfile, query = query)
+}
 #' @importFrom RODBC sqlQuery
 manifoldCRS <- function(connection, componentname) {
   RODBC::sqlQuery(connection, sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys("%s" AS COMPONENT)) AS [CRS] FROM [%s]', componentname, componentname), stringsAsFactors = FALSE)$CRS
 }
 
-#' @importFrom rgdal showP4 writeOGR readOGR
+#' @rawNamespace 
+#' if ( packageVersion("rgdal") >= "1.1.4") {
+#' importFrom("rgdal", showP4)
+#' }
+#' @importFrom utils packageVersion
+#' @importFrom rgdal writeOGR readOGR
 #' @importFrom sp proj4string SpatialPoints SpatialPointsDataFrame
 wktCRS2proj4 <- function(CRS) {
 
   if ( packageVersion("rgdal") >= "1.1.4") {
-    return(showP4(CRS))
+    return(rgdal::showP4(CRS))
   }
   dsn <- tempdir()
   f <- basename(tempfile())
@@ -80,6 +99,7 @@ wktCRS2proj4 <- function(CRS) {
   
 }
 
+#' @importFrom methods is
 #' @importFrom rgeos readWKT
 #' @importFrom maptools spRbind
 #' @importFrom sp SpatialPolygonsDataFrame
