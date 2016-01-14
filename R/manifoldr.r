@@ -67,10 +67,12 @@ readmfd <- function(dsn, table, query = NULL) {
     query <- sprintf("SELECT * FROM [%s]", table)
   }
  x <-  RODBC::sqlQuery(con, query)
+ x
 }
 
 read_area <- function(mapfile, dwgname) {
-  query <- sprintf("SELECT [ID] FROM [%s] WHERE [Type (I)] = \"Area\"", dwgname)
+  query <- sprintf("SELECT [ID], [Name] FROM [%s] WHERE IsArea([ID])", dwgname)
+  cat(query)
   readmfd(mapfile, query = query)
 }
 #' @importFrom RODBC sqlQuery
