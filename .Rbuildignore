@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^README.Rmd$
 ^README-unnamed-chunk-.*\.png
+^\.travis\.yml$
