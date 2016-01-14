@@ -64,12 +64,16 @@ manifoldCRS <- function(connection, componentname) {
   RODBC::sqlQuery(connection, sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys("%s" AS COMPONENT)) AS [CRS] FROM [%s]', componentname, componentname), stringsAsFactors = FALSE)$CRS
 }
 
-#' @importFrom rgdal showP4 writeOGR readOGR
+#' @rawNamespace 
+#' if ( packageVersion("rgdal") >= "1.1.4") {
+#' importFrom("rgdal", showP4)
+#' }
+#' @importFrom rgdal writeOGR readOGR
 #' @importFrom sp proj4string SpatialPoints SpatialPointsDataFrame
 wktCRS2proj4 <- function(CRS) {
 
   if ( packageVersion("rgdal") >= "1.1.4") {
-    return(showP4(CRS))
+    return(rgdal::showP4(CRS))
   }
   dsn <- tempdir()
   f <- basename(tempfile())

@@ -31,6 +31,7 @@ qtx <- "SELECT [ID], [Name], [Length (I)] AS [Perim],
      BranchCount([ID]) AS [nbranches] FROM [Drawing Table]"
 sq <- RODBC::sqlQuery(con, qtx)
 sq
+
 }
 }
 
