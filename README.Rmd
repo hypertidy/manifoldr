@@ -25,7 +25,9 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-`manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package to obtain the package and installation. 
+1) `manifoldr` relies on [Manifold System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working. 
+
+2) `manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package. 
 
 ```R
 if (packageVersion("devtools") < 1.6) {
@@ -34,18 +36,25 @@ if (packageVersion("devtools") < 1.6) {
 devtools::install_github("mdsumner/manifoldr")
 ```
 
+(Future versions may become available on CRAN. )
+
+## Problems
+
+* Large Geoms and other binary types are stored as the `ODBC_binary` type from the `RODBC` package. Be careful with these columns as they do not have compact printing methods. This is something to added to a future version of this package. 
+
 ## Basic Usage
 
-Open a connection to a .map file an issue a query.  
+Open a connection to a built-in .map file and issue a query.  
 
-```R
+```{r}
 library(manifoldr)
 library(RODBC)
-con <- odbcConnectManifold("E:\\ManifoldDVD\\Data\\World\\Medium Resolution\\World Provinces.map")
-Provinces <- sqlQuery(con, "SELECT [ID], [Country], [Province]
-                                FROM [Provinces_] WHERE [Longitude (I)] > 100 AND [Latitude (I)] < 0")
+mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+con <- odbcConnectManifold(mapfile)
+tab <- sqlQuery(con, "SELECT [ID], [Name], BranchCount([ID]) AS [nBranch] FROM [Drawing] ORDER BY [nBranch]")
 close(con)
 
+print(tab)
 ```
 
 All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available. 
@@ -78,7 +87,7 @@ There are lots of other pathways, including GDAL as a third/fourth party and via
 
 We can read from Manifold map files using a bit of SQL and the wkb R package. 
 
-```{r,message=FALSE,warning=FALSE}
+```{r,message=FALSE,warning=FALSE, eval=FALSE}
 ## extensions we need
 library(wkb)    ## for parsing WKB blobs as Spatial R objects
 library(sp)     ## Spatial R objects
