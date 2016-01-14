@@ -59,11 +59,20 @@ odbcConnectManifold <- function (mapfile)
 }
 
 
+
 readmfd <- function(dsn, table, query = NULL) {
-  if (!checkAvailability()) warning("Manifold is not installed, but is required for connection to project files.")
-  NULL
+  if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
+  con <- odbcConnectManifold(dsn)
+  if (is.null(query)) {
+    query <- sprintf("SELECT * FROM [%s]", table)
+  }
+ x <-  RODBC::sqlQuery(con, query)
 }
 
+read_area <- function(mapfile, dwgname) {
+  query <- sprintf("SELECT [ID] FROM [%s] WHERE [Type (I)] = \"Area\"", dwgname)
+  readmfd(mapfile, query = query)
+}
 #' @importFrom RODBC sqlQuery
 manifoldCRS <- function(connection, componentname) {
   RODBC::sqlQuery(connection, sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys("%s" AS COMPONENT)) AS [CRS] FROM [%s]', componentname, componentname), stringsAsFactors = FALSE)$CRS
