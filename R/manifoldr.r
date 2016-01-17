@@ -85,7 +85,7 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
   
   topol <- match.arg(topol)
   on.exit(.cleanup(con))
-  if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
+ # if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
   con <- odbcConnectManifold(dsn)
   atts <- "*"
   if (spatial) {
