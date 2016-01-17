@@ -72,7 +72,16 @@ RODBC::odbcDriverConnect(con)
   if (x > -1) RODBC:::odbcClose(x)
   invisible(NULL)
 }
-readmfd <- function(dsn, table, query = NULL, spatial = FALSE) {
+
+topolclause <- function(x) {
+  switch(x, 
+         area = "IsArea([ID])", 
+         line = "IsLine([ID])", 
+         point = "IsPoint([ID])")
+}
+readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area", "line", "point")) {
+  
+  topol <- match.arg(topol)
   on.exit(.cleanup(con))
   if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
   con <- odbcConnectManifold(dsn)
@@ -80,24 +89,30 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE) {
   if (spatial) {
     mc <- mapcontents(dsn)
     attributes <- mc$columns$colnames[mc$columns$tableID == mc$tables$ID[which(mc$tables$TABLE_NAME == table)]]
-    print(attributes)
+   # print(attributes)
     attributes <- 
       paste0("[", attributes[-grep(" \\(I\\)", attributes)], "]")
-    print(attributes)
-    atts <- sprintf("%s, CGeomWKB(Geom(ID)) AS [wkb]", paste(attributes, collapse = ","))
+  #  print(attributes)
+    randomstring <- paste(sample(c(letters, 1:9), 15, replace = TRUE), collapse = "")
+    atts <- sprintf("%s, CGeomWKB(Geom(ID)) AS [%s]", paste(attributes, collapse = ","), randomstring)
     
   }
   if (is.null(query)) {
-    query <- sprintf("SELECT %s FROM [%s]", atts, table)
+    query <- sprintf("SELECT %s FROM [%s] WHERE %s", atts, table, topolclause(topol))
   }
   
-  return(query)
+  
+  #return(query)
  x <-  RODBC::sqlQuery(con, query)
  if (spatial) {
-   geom <- wkb::readWKB(x[["Geom (I)"]])
-   
+   if (nrow(x) < 1L) stop("query returned no records, cannot create a Spatial object from this")
+   geom <- wkb::readWKB(x[[randomstring]])
+   x[[randomstring]] <- NULL
    ## reconstruct our original layer
-   Countries <- SpatialPolygonsDataFrame(Rsp, subset(ProvincesGeom, select = c("ID", "Country", "Province")))
+   x <- switch(topol, 
+                area = SpatialPolygonsDataFrame(geom, x, match.ID = FALSE), 
+                line = SpatialLinesDataFrame(geom, x, match.ID = FALSE), 
+                point = SpatialPointsDataFrame(geom, x, match.ID = FALSE))
    
  }
  x

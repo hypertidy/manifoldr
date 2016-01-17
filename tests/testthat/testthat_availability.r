@@ -25,9 +25,10 @@ test_that("failed connection is graceful", {
 })
 
 test_that("we can get out a table summary", {
-  expect_that(manifoldr:::mfd(mapfile), is_a("list"))
+  expect_that(manifoldr:::mapcontents(mapfile), is_a("list"))
 })
 
 test_that("we can read a drawing table", {
   expect_that(manifoldr:::readmfd(mapfile, "Drawing Table"), is_a("data.frame"))
+  expect_that(manifoldr:::readmfd(mapfile, "Drawing Table", topol = "line", spatial = TRUE), is_a("SpatialLinesDataFrame"))
 })
