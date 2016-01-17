@@ -16,6 +16,16 @@ knitr::opts_chunk$set(
 ```
 # manifoldr
 
+Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically created new tables. 
+
+NOTE: The ODBC driver for Manifold is *read-only*, so we cannot modify the contents of an existing file. 
+
+Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error like this: 
+
+![alt text](inst/extdata/openCon.png)
+
+If you see this, and you want to save your changes you must choose "Yes", and save the file to a new location. There is no other option that I know of. 
+
 ## Installation
 
 1) `manifoldr` relies on [Manifold® System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working. 

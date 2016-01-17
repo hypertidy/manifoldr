@@ -2,6 +2,16 @@
 manifoldr
 =========
 
+Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically created new tables.
+
+NOTE: The ODBC driver for Manifold is *read-only*, so we cannot modify the contents of an existing file.
+
+Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error like this:
+
+![alt text](inst/extdata/openCon.png)
+
+If you see this, and you want to save your changes you must choose "Yes", and save the file to a new location. There is no other option that I know of.
+
 Installation
 ------------
 
@@ -30,20 +40,47 @@ Open a connection to a built-in .map file and issue a query.
 
 ``` r
 library(manifoldr)
+#> [1] "Driver={Manifold Project Driver (*.map)};DBQ=E:\\inst\\R\\R\\library\\manifoldr\\extdata\\AreaDrawing.map;DefaultDir=E:/inst/R/R/library/manifoldr/extdata;Unicode=True;Ansi=TRUE;OpenGIS=True;DSN=Default;"
 library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 con <- odbcConnectManifold(mapfile)
+#> [1] "Driver={Manifold Project Driver (*.map)};DBQ=E:\\inst\\R\\R\\library\\manifoldr\\extdata\\AreaDrawing.map;DefaultDir=E:/inst/R/R/library/manifoldr/extdata;Unicode=True;Ansi=TRUE;OpenGIS=True;DSN=Default;"
 tab <- sqlQuery(con, "SELECT [ID], [Name], BranchCount([ID]) AS [nBranch] FROM [Drawing] ORDER BY [nBranch]")
 close(con)
 
 print(tab)
-#>   ID Name nBranch
-#> 1 10    L       1
-#> 2 11    E       1
-#> 3 12    G       1
-#> 4 13    I       1
-#> 5 15    N       1
-#> 6 14    O       2
+#>    ID Name nBranch
+#> 1  10    L       1
+#> 2  11    E       1
+#> 3  12    G       1
+#> 4  13    I       1
+#> 5  15    N       1
+#> 6  22            1
+#> 7  24            1
+#> 8  26    O       1
+#> 9  27            1
+#> 10 28            1
+#> 11 29            1
+#> 12 30            1
+#> 13 31            1
+#> 14 32            1
+#> 15 33            1
+#> 16 34            1
+#> 17 35            1
+#> 18 36            1
+#> 19 37            1
+#> 20 38            1
+#> 21 39            1
+#> 22 40            1
+#> 23 41            1
+#> 24 42            1
+#> 25 43            1
+#> 26 44            1
+#> 27 45            1
+#> 28 46            1
+#> 29 47            1
+#> 30 48            1
+#> 31 14    O       2
 ```
 
 All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available. NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
