@@ -79,6 +79,8 @@ topolclause <- function(x) {
          line = "IsLine([ID])", 
          point = "IsPoint([ID])")
 }
+
+#' @importFrom sp SpatialPolygonsDataFrame SpatialLinesDataFrame SpatialPointsDataFrame
 readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area", "line", "point")) {
   
   topol <- match.arg(topol)
@@ -87,9 +89,11 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
   con <- odbcConnectManifold(dsn)
   atts <- "*"
   if (spatial) {
-    mc <- mapcontents(dsn)
-    attributes <- mc$columns$colnames[mc$columns$tableID == mc$tables$ID[which(mc$tables$TABLE_NAME == table)]]
-   # print(attributes)
+    
+    #mc <- mapcontents(dsn)
+    attributes <- columnames(con, table)
+    #mc$columns$colnames[mc$columns$tableID == mc$tables$ID[which(mc$tables$TABLE_NAME == table)]]
+   
     attributes <- 
       paste0("[", attributes[-grep(" \\(I\\)", attributes)], "]")
   #  print(attributes)
@@ -100,7 +104,7 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
   if (is.null(query)) {
     query <- sprintf("SELECT %s FROM [%s] WHERE %s", atts, table, topolclause(topol))
   }
-  
+  #print(query)
   
   #return(query)
  x <-  RODBC::sqlQuery(con, query)
@@ -118,6 +122,9 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
  x
 }
 
+columnames <- function(con, tablename) {
+  names(sqlQuery(con, sprintf("SELECT * FROM [%s] WHERE 0 = 1", tablename)))
+}
 mapcontents <- function(mapfile) {
   on.exit(.cleanup(con))
   con <- odbcConnectManifold(mapfile)
