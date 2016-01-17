@@ -4,7 +4,7 @@
 \alias{odbcConnectManifold}
 \title{ODBC connection to Manifold map files.}
 \usage{
-odbcConnectManifold(mapfile)
+odbcConnectManifold(mapfile, unicode = TRUE, ansi = TRUE, opengis = TRUE)
 }
 \arguments{
 \item{mapfile}{Manifold project *.map file}

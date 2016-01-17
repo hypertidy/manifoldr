@@ -21,8 +21,9 @@
 #' }
 #' @return RODBC object
 #' @importFrom RODBC odbcDriverConnect
+#' @importFrom tools toTitleCase 
 #' @export
-odbcConnectManifold <- function (mapfile)
+odbcConnectManifold <- function (mapfile, unicode = TRUE, ansi = TRUE, opengis = TRUE)
   
 {
   
@@ -39,6 +40,11 @@ odbcConnectManifold <- function (mapfile)
       else filename)
     
   }
+  unicode <- tools::toTitleCase(tolower(format(unicode)))
+  opengis <- tools::toTitleCase(tolower(format(ansi)))
+  opengis <- tools::toTitleCase(tolower(format(opengis)))
+  
+  parms <- sprintf(";Unicode=%s;Ansi=%s;OpenGIS=%s;DSN=Default", unicode, ansi, opengis)
   
   con <- if (missing(mapfile))
     
@@ -50,11 +56,10 @@ odbcConnectManifold <- function (mapfile)
     
     paste("Driver={Manifold Project Driver (*.map)};DBQ=",
           
-          fp, ";DefaultDir=", dirname(fp), ";Unicode=False;Ansi=False;OpenGIS=False;DSN=Default", ";", sep = "")
+          fp, ";DefaultDir=", dirname(fp), parms, ";", sep = "")
     
   }
-  
-  RODBC::odbcDriverConnect(con)
+RODBC::odbcDriverConnect(con)
   
 }
 
@@ -70,6 +75,23 @@ readmfd <- function(dsn, table, query = NULL) {
  x
 }
 
+mfd <- function(mapfile) {
+  on.exit(if (con > -1) RODBC:::odbcClose(con))
+  con <- odbcConnectManifold(mapfile)
+  if (con < 0) stop(sprintf('cannot open %s\nRODBC warning messages:\n\n', mapfile))
+  tabs <- RODBC::sqlTables(con)
+  tabs$ID <- seq(nrow(tabs))
+  cols <- vector("list", nrow(tabs))
+  # print(names(tabs))
+  for (itab in seq_along(tabs$TABLE_NAME)) {
+    tab <- sqlQuery(con, sprintf("SELECT * FROM [%s] WHERE 0 = 1", tabs$TABLE_NAME[itab]), as.is = TRUE)
+    # print(tab)
+    # print(list(colnames = names(tab), table = tabs$TABLE_NAME[itab]))
+    # 
+    cols[[itab]] <- data.frame(colnames = names(tab), tableID = tabs$ID[itab], stringsAsFactors = FALSE)
+  }
+  list(tables = tabs, columns = do.call(rbind, cols))
+}
 read_area <- function(mapfile, dwgname) {
   query <- sprintf("SELECT [ID], [Name] FROM [%s] WHERE IsArea([ID])", dwgname)
   cat(query)
