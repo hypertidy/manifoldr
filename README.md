@@ -40,11 +40,9 @@ Open a connection to a built-in .map file and issue a query.
 
 ``` r
 library(manifoldr)
-#> [1] "Driver={Manifold Project Driver (*.map)};DBQ=E:\\inst\\R\\R\\library\\manifoldr\\extdata\\AreaDrawing.map;DefaultDir=E:/inst/R/R/library/manifoldr/extdata;Unicode=True;Ansi=TRUE;OpenGIS=True;DSN=Default;"
 library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 con <- odbcConnectManifold(mapfile)
-#> [1] "Driver={Manifold Project Driver (*.map)};DBQ=E:\\inst\\R\\R\\library\\manifoldr\\extdata\\AreaDrawing.map;DefaultDir=E:/inst/R/R/library/manifoldr/extdata;Unicode=True;Ansi=TRUE;OpenGIS=True;DSN=Default;"
 tab <- sqlQuery(con, "SELECT [ID], [Name], BranchCount([ID]) AS [nBranch] FROM [Drawing] ORDER BY [nBranch]")
 close(con)
 
@@ -142,6 +140,19 @@ Countries
 
 plot(Countries)
 devtools::session_info()
+```
+
+Timings
+=======
+
+``` r
+## Built:                R 3.2.3; ; 2016-01-17 14:03:26 UTC; windows
+f <- "..Data\\World\\High Resolution\\Countries hires.map"
+system.time(x <- manifoldr:::readmfd(f, "Countries"))
+#  user  system elapsed 
+# 100.39    1.70  103.21
+format(object.size(x), unit = "Mb")
+#[1] "75.5 Mb"
 ```
 
 TODO
