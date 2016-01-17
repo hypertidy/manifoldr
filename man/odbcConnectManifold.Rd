@@ -7,7 +7,13 @@
 odbcConnectManifold(mapfile, unicode = TRUE, ansi = TRUE, opengis = TRUE)
 }
 \arguments{
-\item{mapfile}{Manifold project *.map file}
+\item{mapfile}{character string, path to Manifold project *.map file}
+
+\item{unicode}{logical}
+
+\item{ansi}{logical}
+
+\item{opengis}{logical}
 }
 \value{
 RODBC object
@@ -17,6 +23,9 @@ Create an ODBC connection for Manifold GIS.
 }
 \details{
 See \code{\link[RODBC]{odbcDriverConnect}}
+
+See the documentation for the underlying driver:
+\url{http://www.georeference.org/doc/using_the_manifold_odbc_driver.htm}
 }
 \examples{
 \dontrun{
@@ -31,7 +40,6 @@ qtx <- "SELECT [ID], [Name], [Length (I)] AS [Perim],
      BranchCount([ID]) AS [nbranches] FROM [Drawing Table]"
 sq <- RODBC::sqlQuery(con, qtx)
 sq
-
 }
 }
 

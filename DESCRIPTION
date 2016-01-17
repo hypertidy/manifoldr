@@ -9,6 +9,6 @@ Imports:
     RODBC, maptools, methods, rgdal, rgeos, sp
 License: GPL-3
 LazyData: true
-SystemRequirements: A Manifold System installation (http://www.manifold.net/). 
+SystemRequirements: Windows-only, with a Manifold System installation (http://www.manifold.net/). 
 RoxygenNote: 5.0.1
 Suggests: testthat

@@ -3,7 +3,12 @@
 #' Create an ODBC connection for Manifold GIS. 
 #' 
 #' See \code{\link[RODBC]{odbcDriverConnect}}
-#' @param mapfile Manifold project *.map file
+#' @param mapfile character string, path to Manifold project *.map file
+#' @param unicode logical
+#' @param ansi logical
+#' @param opengis logical
+#' @details See the documentation for the underlying driver:
+#' \url{http://www.georeference.org/doc/using_the_manifold_odbc_driver.htm}
 #' @examples
 #' \dontrun{
 #' f <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
@@ -17,7 +22,6 @@
 #'      BranchCount([ID]) AS [nbranches] FROM [Drawing Table]"
 #' sq <- RODBC::sqlQuery(con, qtx)
 #' sq
-#'
 #' }
 #' @return RODBC object
 #' @importFrom RODBC odbcDriverConnect
@@ -64,19 +68,43 @@ RODBC::odbcDriverConnect(con)
 }
 
 
-
-readmfd <- function(dsn, table, query = NULL) {
+.cleanup <- function(x) {
+  if (x > -1) RODBC:::odbcClose(x)
+  invisible(NULL)
+}
+readmfd <- function(dsn, table, query = NULL, spatial = FALSE) {
+  on.exit(.cleanup(con))
   if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
   con <- odbcConnectManifold(dsn)
-  if (is.null(query)) {
-    query <- sprintf("SELECT * FROM [%s]", table)
+  atts <- "*"
+  if (spatial) {
+    mc <- mapcontents(dsn)
+    attributes <- mc$columns$colnames[mc$columns$tableID == mc$tables$ID[which(mc$tables$TABLE_NAME == table)]]
+    print(attributes)
+    attributes <- 
+      paste0("[", attributes[-grep(" \\(I\\)", attributes)], "]")
+    print(attributes)
+    atts <- sprintf("%s, CGeomWKB(Geom(ID)) AS [wkb]", paste(attributes, collapse = ","))
+    
   }
+  if (is.null(query)) {
+    query <- sprintf("SELECT %s FROM [%s]", atts, table)
+  }
+  
+  return(query)
  x <-  RODBC::sqlQuery(con, query)
+ if (spatial) {
+   geom <- wkb::readWKB(x[["Geom (I)"]])
+   
+   ## reconstruct our original layer
+   Countries <- SpatialPolygonsDataFrame(Rsp, subset(ProvincesGeom, select = c("ID", "Country", "Province")))
+   
+ }
  x
 }
 
-mfd <- function(mapfile) {
-  on.exit(if (con > -1) RODBC:::odbcClose(con))
+mapcontents <- function(mapfile) {
+  on.exit(.cleanup(con))
   con <- odbcConnectManifold(mapfile)
   if (con < 0) stop(sprintf('cannot open %s\nRODBC warning messages:\n\n', mapfile))
   tabs <- RODBC::sqlTables(con)
@@ -92,11 +120,14 @@ mfd <- function(mapfile) {
   }
   list(tables = tabs, columns = do.call(rbind, cols))
 }
-read_area <- function(mapfile, dwgname) {
+
+mfdarea <- function(mapfile, dwgname) {
   query <- sprintf("SELECT [ID], [Name] FROM [%s] WHERE IsArea([ID])", dwgname)
   cat(query)
   readmfd(mapfile, query = query)
 }
+
+
 #' @importFrom RODBC sqlQuery
 manifoldCRS <- function(connection, componentname) {
   RODBC::sqlQuery(connection, sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys("%s" AS COMPONENT)) AS [CRS] FROM [%s]', componentname, componentname), stringsAsFactors = FALSE)$CRS
