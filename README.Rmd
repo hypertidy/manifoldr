@@ -123,17 +123,7 @@ plot(Countries)
 devtools::session_info()
 ```
 
-# Timings
-
-```{r,eval=FALSE}
-## Built:                R 3.2.3; ; 2016-01-17 14:03:26 UTC; windows
-f <- "..Data\\World\\High Resolution\\Countries hires.map"
-system.time(x <- manifoldr:::readmfd(f, "Countries"))
-#  user  system elapsed 
-# 100.39    1.70  103.21
-format(object.size(x), unit = "Mb")
-#[1] "75.5 Mb"
-```
+``
 
 ## TODO
 

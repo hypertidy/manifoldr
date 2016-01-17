@@ -11,4 +11,7 @@ License: GPL-3
 LazyData: true
 SystemRequirements: Windows-only, with a Manifold System installation (http://www.manifold.net/). 
 RoxygenNote: 5.0.1
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
