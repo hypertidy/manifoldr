@@ -15,10 +15,19 @@ test_that("connection is successful", {
   if (manifoldr:::checkAvailability()) {
   expect_that(odbcConnectManifold(mapfile), is_a("RODBC"))
   } else {
-    expect_lt(odbcConnectManifold(mapfile), 0)
+    expectt_that(failconnect <- odbcConnectManifold(mapfile), testthat::gives_warning("ODBC connection failed"))
+    expect_lt(failconnect, 0)
   }
 })
 
 test_that("failed connection is graceful", {
   expect_lt(odbcConnectManifold(fakefile), 0)
+})
+
+test_that("we can get out a table summary", {
+  expect_that(manifoldr:::mfd(mapfile), is_a("list"))
+})
+
+test_that("we can read a drawing table", {
+  expect_that(manifoldr:::readmfd(mapfile, "Drawing Table"), is_a("data.frame"))
 })
