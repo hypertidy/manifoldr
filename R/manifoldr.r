@@ -45,7 +45,7 @@ odbcConnectManifold <- function (mapfile, unicode = TRUE, ansi = TRUE, opengis =
     
   }
   unicode <- tools::toTitleCase(tolower(format(unicode)))
-  opengis <- tools::toTitleCase(tolower(format(ansi)))
+  ansi <- tools::toTitleCase(tolower(format(ansi)))
   opengis <- tools::toTitleCase(tolower(format(opengis)))
   
   parms <- sprintf(";Unicode=%s;Ansi=%s;OpenGIS=%s;DSN=Default", unicode, ansi, opengis)
