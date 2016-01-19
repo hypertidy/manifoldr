@@ -1,0 +1,36 @@
+---
+title: "Manifold Raster"
+author: "Michael Sumner"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rasters from Manifold via ODBC
+
+```{r}
+library(manifoldr)
+library(RODBC)
+library(raster)
+mapfile <- system.file("extdata", "Montara_20m.map", package = "manifoldr")
+
+con <- odbcConnectManifold(mapfile)
+row1 <- sqlQuery(con, "SELECT TOP 1 * FROM [Montara]")
+zz <- sqlQuery(con, "SELECT [Height (I)] FROM [Montara]")
+georef <- 
+  sqlQuery(con, "SELECT TOP 1 [Easting (I)] AS [xmin],  [Northing (I)] AS [ymax], PixelsByX(Montara) AS [ncol], PixelsByY(Montara) AS [nrow], 
+           PixelWidth(Montara) AS [dx], PixelHeight(Montara) AS [dy] FROM [Montara]")
+close(con)
+
+## not quite
+rasterFromManifoldGeoref <- function(x, crs) {
+  ex <- extent(x$xmin, x$ymax - (x$nrow - 1) * x$dy, 
+               x$xmin + x$ncol * x$dx, x$ymax + x$dy)
+  raster(ex, nrow = x$nrow, ncol = x$ncol, crs = crs)
+}
+r <- setValues(rasterFromManifoldGeoref(georef, "+proj=utm +zone=10 +ellps=WGS84"), zz$`Height (I)`)
+plot(r, col=grey(0:100/100), legend=FALSE, main='Montara', asp = 1)
+```
