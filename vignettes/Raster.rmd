@@ -7,7 +7,17 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(manifoldr)
+library(RODBC)
+library(raster)
+library(rglwidget)
+library(rgl)
+library(gris)
 ```
+
+The georeferencing is not right yet, but the plot is good. 
+
+Promising things ahead. 
 
 ## Rasters from Manifold via ODBC
 
@@ -18,19 +28,48 @@ library(raster)
 mapfile <- system.file("extdata", "Montara_20m.map", package = "manifoldr")
 
 con <- odbcConnectManifold(mapfile)
-row1 <- sqlQuery(con, "SELECT TOP 1 * FROM [Montara]")
-zz <- sqlQuery(con, "SELECT [Height (I)] FROM [Montara]")
+rastername <- "Montara"
+row1 <- sqlQuery(con, sprintf("SELECT TOP 1 * FROM [%s]", rastername))
+zz <- sqlQuery(con, sprintf("SELECT [Height (I)] FROM [%s]", rastername))
 georef <- 
-  sqlQuery(con, "SELECT TOP 1 [Easting (I)] AS [xmin],  [Northing (I)] AS [ymax], PixelsByX(Montara) AS [ncol], PixelsByY(Montara) AS [nrow], 
-           PixelWidth(Montara) AS [dx], PixelHeight(Montara) AS [dy] FROM [Montara]")
+  sqlQuery(con, sprintf("SELECT TOP 1 [Easting (I)] AS [xmin],  [Northing (I)] AS [ymax], PixelsByX([%s]) AS [ncol], PixelsByY([%s]) AS [nrow], 
+           PixelWidth([%s]) AS [dx], PixelHeight([%s]) AS [dy] FROM [%s]", rastername, rastername, rastername, rastername, rastername))
+
 close(con)
 
-## not quite
+## not quite - I'm getting 6km pixels . . .
 rasterFromManifoldGeoref <- function(x, crs) {
   ex <- extent(x$xmin, x$ymax - (x$nrow - 1) * x$dy, 
                x$xmin + x$ncol * x$dx, x$ymax + x$dy)
   raster(ex, nrow = x$nrow, ncol = x$ncol, crs = crs)
 }
 r <- setValues(rasterFromManifoldGeoref(georef, "+proj=utm +zone=10 +ellps=WGS84"), zz$`Height (I)`)
+
+## make it much smaller
+r <- aggregate(r, fact = 8)
 plot(r, col=grey(0:100/100), legend=FALSE, main='Montara', asp = 1)
 ```
+
+
+## Convert to a 3D plot
+
+
+Add normals to avoid the decimation effect above. 
+```{r}
+library(gris)
+b <- bgl(r, z = r * 250)
+library(rgl)
+scl <- function(x) (x - min(na.omit(x)))/diff(range(x, na.rm = TRUE))
+shade3d(addNormals(b), col = grey(seq(0, 1, length.out = 256))[scl(b$vb[3,b$ib]) * 255 + 1])
+subid <- currentSubscene3d()
+rglwidget(elementId="Montara", width = 700, height = 700)
+```
+
+
+Why is the quad model so heavy in the browser? 
+
+
+
+
+## Next
+
