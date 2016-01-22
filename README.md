@@ -4,6 +4,10 @@ manifoldr
 
 Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically created new tables.
 
+See here for a quick example of reading raster data and visualizing it in R: 
+
+http://mdsumner.github.io/2016/01/20/ManifoldRaster.html
+
 NOTE: The ODBC driver for Manifold is *read-only*, so we cannot modify the contents of an existing file.
 
 Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error like this:
