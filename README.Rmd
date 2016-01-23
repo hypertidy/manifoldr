@@ -57,13 +57,13 @@ library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 
 geom2D <- DrawingA(mapfile, "Drawing")
-print(geom2D)
+geom2D
 
 geom1D <- DrawingL(mapfile, "Drawing")
-print(geom1D)
+geom1D
 
 geom0D <- DrawingP(mapfile, "Drawing")
-print(geom0D)
+geom0D
 
 ```
 
