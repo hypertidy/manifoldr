@@ -49,16 +49,25 @@ If you see this, and you want to save your changes you must choose "Yes", and sa
 ## Basic Usage
 
 
-Read in a drawing, must be points lines or areas, for now. 
+Read in a drawing. 
 
 ```{r}
 library(manifoldr)
 library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 
-dwg <- DrawingA(mapfile, "Drawing")
-print(dwg)
+geom2D <- DrawingA(mapfile, "Drawing")
+print(geom2D)
+
+geom1D <- DrawingL(mapfile, "Drawing")
+print(geom1D)
+
+geom0D <- DrawingP(mapfile, "Drawing")
+print(geom0D)
+
 ```
+
+Unfortunately this must be done separately for points lines or areas, for now. Future versions will levarage `gris` or something like it to read a Drawing in its full state. 
 
 ## Lower level usage 
 

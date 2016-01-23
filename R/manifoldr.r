@@ -112,6 +112,7 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
  if (spatial) {
    if (nrow(x) < 1L) stop("query returned no records, cannot create a Spatial object from this")
    geom <- wkb::readWKB(x[[randomstring]])
+  # print(geom)
    x[[randomstring]] <- NULL
    ## reconstruct our original layer
    x <- switch(topol, 
