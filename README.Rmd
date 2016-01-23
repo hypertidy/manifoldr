@@ -48,6 +48,20 @@ If you see this, and you want to save your changes you must choose "Yes", and sa
 
 ## Basic Usage
 
+
+Read in a drawing, must be points lines or areas, for now. 
+
+```{r}
+library(manifoldr)
+library(RODBC)
+mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+
+dwg <- DrawingA(mapfile, "Drawing")
+print(dwg)
+```
+
+## Lower level usage 
+
 Open a connection to a built-in .map file and issue a query.  
 
 ```{r}
@@ -88,6 +102,9 @@ There are lots of other pathways, including GDAL as a third/fourth party and via
 ## Examples
 
 ### Manifold geometry via RODBC
+
+NOTE: there's no real need for this now, please use higher level functions which do all of this in one step. 
+
 
 We can read from Manifold map files using a bit of SQL and the wkb R package. 
 

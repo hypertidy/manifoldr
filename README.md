@@ -4,18 +4,6 @@ manifoldr
 
 Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically created new tables.
 
-See here for a quick example of reading raster data and visualizing it in R: 
-
-http://mdsumner.github.io/2016/01/20/ManifoldRaster.html
-
-NOTE: The ODBC driver for Manifold is *read-only*, so we cannot modify the contents of an existing file.
-
-Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error like this:
-
-![alt text](inst/extdata/openCon.png)
-
-If you see this, and you want to save your changes you must choose "Yes", and save the file to a new location. There is no other option that I know of.
-
 Installation
 ------------
 
@@ -32,13 +20,41 @@ devtools::install_github("mdsumner/manifoldr")
 
 (Future versions may become available on CRAN. )
 
-Problems
---------
+NOTE:
+-----
 
--   Large Geoms and other binary types are stored as the `ODBC_binary` type from the `RODBC` package. Be careful with these columns as they do not have compact printing methods. This is something to added to a future version of this package.
+-   The ODBC driver for Manifold is *read-only*, so we cannot modify the contents of an existing file.
+
+Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error like this:
+
+![alt text](inst/extdata/openCon.png)
+
+If you see this, and you want to save your changes you must choose "Yes", and save the file to a new location. There is no other option that I know of.
 
 Basic Usage
 -----------
+
+Read in a drawing, must be points lines or areas, for now.
+
+``` r
+library(manifoldr)
+library(RODBC)
+mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+
+dwg <- DrawingA(mapfile, "Drawing")
+print(dwg)
+#> class       : SpatialPolygonsDataFrame 
+#> features    : 6 
+#> extent      : -178, 924.5, -52, 202  (xmin, xmax, ymin, ymax)
+#> coord. ref. : NA 
+#> variables   : 2
+#> names       : ID, Name 
+#> min values  : 10,    E 
+#> max values  : 15,    O
+```
+
+Lower level usage
+-----------------
 
 Open a connection to a built-in .map file and issue a query.
 
@@ -111,6 +127,8 @@ Examples
 
 ### Manifold geometry via RODBC
 
+NOTE: there's no real need for this now, please use higher level functions which do all of this in one step.
+
 We can read from Manifold map files using a bit of SQL and the wkb R package.
 
 ``` r
@@ -147,6 +165,11 @@ devtools::session_info()
 ```
 
 \`\`
+
+Problems
+--------
+
+-   Large Geoms and other binary types are stored as the `ODBC_binary` type from the `RODBC` package. Be careful with these columns as they do not have compact printing methods. This is something to added to a future version of this package.
 
 TODO
 ----
