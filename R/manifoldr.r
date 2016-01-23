@@ -69,7 +69,7 @@ RODBC::odbcDriverConnect(con)
 
 
 .cleanup <- function(x) {
-  if (x > -1) RODBC:::odbcClose(x)
+  if (x > -1) RODBC::odbcClose(x)
   invisible(NULL)
 }
 
@@ -80,9 +80,10 @@ topolclause <- function(x) {
          point = "IsPoint([ID])")
 }
 
+#' @importFrom wkb readWKB
 #' @importFrom sp SpatialPolygonsDataFrame SpatialLinesDataFrame SpatialPointsDataFrame
 readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area", "line", "point")) {
-  
+
   topol <- match.arg(topol)
   on.exit(.cleanup(con))
  # if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
@@ -104,7 +105,7 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
   if (is.null(query)) {
     query <- sprintf("SELECT %s FROM [%s] WHERE %s", atts, table, topolclause(topol))
   }
-  #print(query)
+#  print(query)
   
   #return(query)
  x <-  RODBC::sqlQuery(con, query)
@@ -121,6 +122,89 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
  }
  x
 }
+
+
+
+#' Title
+#'
+#' @param mapfile 
+#' @param dwgname 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+DrawingA <- function(mapfile, dwgname) {
+
+  readmfd(mapfile, dwgname, topol = "area", spatial = TRUE)
+}
+
+
+#' Title
+#'
+#' @param mapfile 
+#' @param dwgname 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+DrawingL <- function(mapfile, dwgname) {
+  readmfd(mapfile, dwgname, topol = "line", spatial = TRUE)
+}
+
+#' Title
+#'
+#' @param mapfile 
+#' @param dwgname 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+DrawingP <- function(mapfile, dwgname) {
+  readmfd(mapfile, dwgname, topol = "point", spatial = TRUE)
+}
+
+rasterFromManifoldGeoref <- function(x, crs) {
+  ex <- extent(x$xmin,  x$xmin + x$ncol * x$dx,
+               x$ymax - (x$nrow - 1) * x$dy,
+               x$ymax + x$dy)
+  raster(ex, nrow = x$nrow, ncol = x$ncol, crs = crs)
+}
+
+
+#' Title
+#'
+#' @param mapfile 
+#' @param dwgname 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' @importFrom raster extent ncol nrow raster setValues
+Surface <- function(mapfile, rastername) {
+  if (!requireNamespace("raster", quietly = TRUE)) {
+    stop("raster package not available, please install it with install.packages(\"raster\")")
+  } else {
+    if (!"raster" %in% .packages()) {
+      if (interactive()) {warning("raster package is loaded but not attached, you'll need to run library(\"raster\") to use it") }
+    }
+  }
+  on.exit(.cleanup(con))
+  # if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
+  con <- odbcConnectManifold(mapfile)
+  
+  row1 <- sqlQuery(con, sprintf("SELECT TOP 1 * FROM [%s]", rastername))
+  zz <- sqlQuery(con, sprintf("SELECT [Height (I)] FROM [%s]", rastername))
+georef <- 
+  sqlQuery(con, sprintf("SELECT TOP 1 [Easting (I)] AS [xmin],  [Northing (I)] AS [ymax], PixelsByX([%s]) AS [ncol], PixelsByY([%s]) AS [nrow], 
+                        PixelWidth([%s]) AS [dx], PixelHeight([%s]) AS [dy] FROM [%s]", rastername, rastername, rastername, rastername, rastername))
+setValues(rasterFromManifoldGeoref(georef, NA_character_), zz$`Height (I)`)
+}
+
+
 
 columnames <- function(con, tablename) {
   names(sqlQuery(con, sprintf("SELECT * FROM [%s] WHERE 0 = 1", tablename)))
@@ -143,11 +227,8 @@ mapcontents <- function(mapfile) {
   list(tables = tabs, columns = do.call(rbind, cols))
 }
 
-mfdarea <- function(mapfile, dwgname) {
-  query <- sprintf("SELECT [ID], [Name] FROM [%s] WHERE IsArea([ID])", dwgname)
-  cat(query)
-  readmfd(mapfile, query = query)
-}
+
+
 
 
 #' @importFrom RODBC sqlQuery

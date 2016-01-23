@@ -6,7 +6,7 @@ Description: Connect to and read from Manifold System (a Geographic Information 
 Depends: 
     R (>= 3.2.0)
 Imports: 
-    RODBC, maptools, methods, rgdal, rgeos, sp
+    RODBC, maptools, methods, rgdal, rgeos, sp, wkb
 License: GPL-3
 LazyData: true
 SystemRequirements: Windows-only, with a Manifold System installation (http://www.manifold.net/). 
