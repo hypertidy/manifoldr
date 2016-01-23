@@ -7,7 +7,7 @@ Depends:
     R (>= 3.2.0)
 Imports: 
     RODBC, maptools, methods, rgdal, rgeos, sp, wkb
-License: GPL-3
+License: MIT + file LICENSE
 LazyData: true
 SystemRequirements: Windows-only, with a Manifold System installation (http://www.manifold.net/). 
 RoxygenNote: 5.0.1
