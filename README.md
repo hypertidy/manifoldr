@@ -42,10 +42,6 @@ library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 
 geom2D <- DrawingA(mapfile, "Drawing")
-#> class       : SpatialPolygons 
-#> features    : 6 
-#> extent      : -178, 924.5, -52, 202  (xmin, xmax, ymin, ymax)
-#> coord. ref. : NA
 print(geom2D)
 #> class       : SpatialPolygonsDataFrame 
 #> features    : 6 
@@ -57,44 +53,12 @@ print(geom2D)
 #> max values  : 15,    O
 
 geom1D <- DrawingL(mapfile, "Drawing")
-#> SpatialLines:
-#> class       : SpatialLines 
-#> features    : 2 
-#> extent      : -615.2802, 1334.871, -565.2889, 612.3995  (xmin, xmax, ymin, ymax)
-#> coord. ref. : NA 
-#> Coordinate Reference System (CRS) arguments: NA
 print(geom1D)
 #>                                    geometry ID Name
 #> 1  MULTILINESTRING((-615.2802 473.103 ...)) 22   NA
 #> 2 MULTILINESTRING((1315.876 -321.5201 ...)) 24   NA
 
 geom0D <- DrawingP(mapfile, "Drawing")
-#> SpatialPoints:
-#>               x         y
-#>  [1,]  513.5000  142.0000
-#>  [2,]  526.5000   38.0000
-#>  [3,]  548.5000  -21.0000
-#>  [4,]  634.5000  -36.0000
-#>  [5,]  668.5000  -17.0000
-#>  [6,]  687.5000   38.0000
-#>  [7,]  687.5000  122.0000
-#>  [8,]  682.5000  161.0000
-#>  [9,]  660.5000  189.0000
-#> [10,]  628.5000  200.0000
-#> [11,]  576.5000  199.0000
-#> [12,]  551.5000  183.0000
-#> [13,]  515.5000  173.0000
-#> [14,]  581.5000   65.0000
-#> [15,]  581.5000  101.0000
-#> [16,]  593.5000  113.0000
-#> [17,]  611.5000  114.0000
-#> [18,]  630.5000  103.0000
-#> [19,]  632.5000   74.0000
-#> [20,]  617.5000   41.0000
-#> [21,] -615.2802  473.1030
-#> [22,] -536.1344 -536.7965
-#> [23,] 1091.1018 -565.2889
-#> Coordinate Reference System (CRS) arguments: NA
 print(geom0D)
 #>               coordinates ID Name
 #> 1            (513.5, 142) 26    O
