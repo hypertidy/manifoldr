@@ -77,6 +77,15 @@ geom0D
 
 Unfortunately this must be done separately for points lines or areas, for now. Future versions will levarage `gris` or something like it to read a Drawing in its full state.
 
+Read in a surface.
+
+``` r
+mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
+
+gg <- Surface(mapfile2, "Montara")
+gg
+```
+
 Lower level usage
 -----------------
 

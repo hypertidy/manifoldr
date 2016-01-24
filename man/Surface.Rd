@@ -2,16 +2,23 @@
 % Please edit documentation in R/manifoldr.r
 \name{Surface}
 \alias{Surface}
-\title{Title}
+\title{Read a Surface from a Manifold project file.}
 \usage{
 Surface(mapfile, rastername)
 }
 \arguments{
-\item{mapfile}{}
+\item{mapfile}{Manifold project file}
 
-\item{dwgname}{}
+\item{rastername}{Surface name to read}
+}
+\value{
+RasterLayer
 }
 \description{
-Title
+Read a Surface from a Manifold project file.
+}
+\examples{
+mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
+gg <- Surface(mapfile2, "Montara")
 }
 

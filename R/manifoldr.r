@@ -9,6 +9,7 @@
 #' @param opengis logical
 #' @details See the documentation for the underlying driver:
 #' \url{http://www.georeference.org/doc/using_the_manifold_odbc_driver.htm}
+#' Be sure to set ansi = FALSE for some string escape cases like CoordSys("Drawing" AS COMPONENT). 
 #' @examples
 #' \dontrun{
 #' f <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
@@ -27,7 +28,7 @@
 #' @importFrom RODBC odbcDriverConnect
 #' @importFrom tools toTitleCase 
 #' @export
-odbcConnectManifold <- function (mapfile, unicode = TRUE, ansi = TRUE, opengis = TRUE)
+odbcConnectManifold <- function (mapfile, unicode = TRUE, ansi = FALSE, opengis = TRUE)
   
 {
   
@@ -81,7 +82,7 @@ topolclause <- function(x) {
 }
 
 #' @importFrom wkb readWKB
-#' @importFrom sp SpatialPolygonsDataFrame SpatialLinesDataFrame SpatialPointsDataFrame
+#' @importFrom sp CRS proj4string<- SpatialPolygonsDataFrame SpatialLinesDataFrame SpatialPointsDataFrame
 readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area", "line", "point")) {
 
   topol <- match.arg(topol)
@@ -100,7 +101,10 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
   #  print(attributes)
     randomstring <- paste(sample(c(letters, 1:9), 15, replace = TRUE), collapse = "")
     atts <- sprintf("%s, CGeomWKB(Geom(ID)) AS [%s]", paste(attributes, collapse = ","), randomstring)
-    
+    crswkt <- manifoldCRS(con, table)
+    crs <- wktCRS2proj4(crswkt)
+   # print(crswkt)
+  #  print(crs)
   }
   if (is.null(query)) {
     query <- sprintf("SELECT %s FROM [%s] WHERE %s", atts, table, topolclause(topol))
@@ -112,6 +116,7 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
  if (spatial) {
    if (nrow(x) < 1L) stop("query returned no records, cannot create a Spatial object from this")
    geom <- wkb::readWKB(x[[randomstring]])
+   proj4string(geom) <-  CRS(crs)
   # print(geom)
    x[[randomstring]] <- NULL
    ## reconstruct our original layer
@@ -126,43 +131,38 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
 
 
 
-#' Title
+#' Read a Drawing from a Manifold project. 
 #'
-#' @param mapfile 
-#' @param dwgname 
+#' @param mapfile Manifold project file
+#' @param dwgname Drawing name to read
 #'
-#' @return
+#' @return drawingA returns a 'SpatialPolygonsDataFrame', drawingL a 'SpatialLinesDataFrame' and drawingP a 'SpatialPointsDataFrame'
 #' @export
-#'
+#' 
 #' @examples
+#' mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+#' geom2D <- DrawingA(mapfile, "Drawing")
+#' geom2D
+#' 
+#' geom1D <- DrawingL(mapfile, "Drawing")
+#' geom1D
+#' 
+#' geom0D <- DrawingP(mapfile, "Drawing")
+#' geom0D
 DrawingA <- function(mapfile, dwgname) {
 
   readmfd(mapfile, dwgname, topol = "area", spatial = TRUE)
 }
 
 
-#' Title
-#'
-#' @param mapfile 
-#' @param dwgname 
-#'
-#' @return
+#' @rdname DrawingA
 #' @export
-#'
-#' @examples
 DrawingL <- function(mapfile, dwgname) {
   readmfd(mapfile, dwgname, topol = "line", spatial = TRUE)
 }
 
-#' Title
-#'
-#' @param mapfile 
-#' @param dwgname 
-#'
-#' @return
+#' @rdname DrawingA
 #' @export
-#'
-#' @examples
 DrawingP <- function(mapfile, dwgname) {
   readmfd(mapfile, dwgname, topol = "point", spatial = TRUE)
 }
@@ -175,15 +175,17 @@ rasterFromManifoldGeoref <- function(x, crs) {
 }
 
 
-#' Title
+#' Read a Surface from a Manifold project file. 
 #'
-#' @param mapfile 
-#' @param dwgname 
+#' @param mapfile Manifold project file
+#' @param rastername Surface name to read 
 #'
-#' @return
+#' @return RasterLayer
 #' @export
 #'
 #' @examples
+#' mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
+#' gg <- Surface(mapfile2, "Montara")
 #' @importFrom raster extent ncol nrow raster setValues
 Surface <- function(mapfile, rastername) {
   if (!requireNamespace("raster", quietly = TRUE)) {
@@ -199,14 +201,20 @@ Surface <- function(mapfile, rastername) {
   
   row1 <- sqlQuery(con, sprintf("SELECT TOP 1 * FROM [%s]", rastername))
   zz <- sqlQuery(con, sprintf("SELECT [Height (I)] FROM [%s]", rastername))
-georef <- 
-  sqlQuery(con, sprintf("SELECT TOP 1 [Easting (I)] AS [xmin],  [Northing (I)] AS [ymax], PixelsByX([%s]) AS [ncol], PixelsByY([%s]) AS [nrow], 
-                        PixelWidth([%s]) AS [dx], PixelHeight([%s]) AS [dy] FROM [%s]", rastername, rastername, rastername, rastername, rastername))
-setValues(rasterFromManifoldGeoref(georef, NA_character_), zz$`Height (I)`)
+georef <- getGeoref(con, rastername)
+crswkt <- manifoldCRS(con, rastername)
+#print(crswkt)
+  crs <- wktCRS2proj4(crswkt)
+#  print(crs)
+#crs <- NA_character_
+  setValues(rasterFromManifoldGeoref(georef, crs), zz$`Height (I)`)
 }
 
 
-
+getGeoref <- function(con, rastername) {
+  sqlQuery(con, sprintf("SELECT TOP 1 [Easting (I)] AS [xmin],  [Northing (I)] AS [ymax], PixelsByX([%s]) AS [ncol], PixelsByY([%s]) AS [nrow], 
+                        PixelWidth([%s]) AS [dx], PixelHeight([%s]) AS [dy] FROM [%s]", rastername, rastername, rastername, rastername, rastername))
+}
 columnames <- function(con, tablename) {
   names(sqlQuery(con, sprintf("SELECT * FROM [%s] WHERE 0 = 1", tablename)))
 }
@@ -228,14 +236,29 @@ mapcontents <- function(mapfile) {
   list(tables = tabs, columns = do.call(rbind, cols))
 }
 
-
-
-
-
 #' @importFrom RODBC sqlQuery
 manifoldCRS <- function(connection, componentname) {
-  RODBC::sqlQuery(connection, sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys("%s" AS COMPONENT)) AS [CRS] FROM [%s]', componentname, componentname), stringsAsFactors = FALSE)$CRS
+  qu <- sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys(\"%s\" AS COMPONENT)) AS [CRS] FROM [%s]',  
+                componentname, 
+                componentname)
+  RODBC::sqlQuery(connection, qu, stringsAsFactors = FALSE)$CRS
 }
+
+#' #' @importFrom RODBC sqlQuery
+#' manifoldDrawingCRS <- function(connection, componentname) {
+#'    qu <- sprintf('SELECT TOP 1 CoordSysToWKT(CCoordSys([Geom (I)])) AS [CRS] FROM [%s]',  componentname)
+#'   RODBC::sqlQuery(connection, qu, stringsAsFactors = FALSE)$CRS
+#' }
+#' 
+#' #' @importFrom RODBC sqlQuery
+#' manifoldRasterCRS <- function(connection, componentname) {
+#'   ## this should work but does not
+#'   ##qu <- sprintf('SELECT TOP 1 CoordSysToWKT(CoordSys("%s" AS COMPONENT)) AS [CRS] FROM [%s]', componentname, componentname)
+#'  # TOP 1 CCoordSys(NewPoint([Easting (I)], [Northing (I)]))
+#'   qu <- sprintf('OPTIONS COORDSYS("[%s]" AS COMPONENT);SELECT TOP 1 CoordSysToWKT(CCoordSys(NewPoint([Easting (I)], [Northing (I)]))) AS [CRS] FROM [%s];',  componentname, componentname)
+#'   #print(qu)
+#'   RODBC::sqlQuery(connection, qu, stringsAsFactors = FALSE)$CRS
+#' }
 
 #' @rawNamespace 
 #' if ( packageVersion("rgdal") >= "1.1.4") {
