@@ -46,7 +46,7 @@ geom2D
 #> class       : SpatialPolygonsDataFrame 
 #> features    : 6 
 #> extent      : -178, 924.5, -52, 202  (xmin, xmax, ymin, ymax)
-#> coord. ref. : NA 
+#> coord. ref. : +proj=laea +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
 #> variables   : 2
 #> names       : ID, Name 
 #> min values  : 10,    E 
@@ -57,7 +57,7 @@ geom1D
 #> class       : SpatialLinesDataFrame 
 #> features    : 2 
 #> extent      : -615.2802, 1334.871, -565.2889, 612.3995  (xmin, xmax, ymin, ymax)
-#> coord. ref. : NA 
+#> coord. ref. : +proj=laea +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
 #> variables   : 2
 #> names       : ID, Name 
 #> min values  : 22,  Inf 
@@ -68,7 +68,7 @@ geom0D
 #> class       : SpatialPointsDataFrame 
 #> features    : 23 
 #> extent      : -615.2802, 1091.102, -565.2889, 473.103  (xmin, xmax, ymin, ymax)
-#> coord. ref. : NA 
+#> coord. ref. : +proj=laea +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
 #> variables   : 2
 #> names       : ID, Name 
 #> min values  : 26,      
@@ -83,7 +83,16 @@ Read in a surface.
 mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
 
 gg <- Surface(mapfile2, "Montara")
+
 gg
+#> class       : RasterLayer 
+#> dimensions  : 698, 558, 389484  (nrow, ncol, ncell)
+#> resolution  : 20, 19.98565  (x, y)
+#> extent      : 544122.5, 555282.5, 4151917, 4165867  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=tmerc +lat_0=0 +lon_0=-123 +k=1 +x_0=500000 +y_0=0 +datum=NAD27 +to_meter=20 +no_defs +ellps=clrk66 +nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat 
+#> data source : in memory
+#> names       : layer 
+#> values      : -1, 1931  (min, max)
 ```
 
 Lower level usage
@@ -134,7 +143,9 @@ print(tab)
 #> 31 14    O       2
 ```
 
-All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available. NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
+All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available.
+
+NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
 
 Manifold GIS and R make for a powerful partnership, but the coupling between them has been relatively loose and sketchy.
 

@@ -75,6 +75,8 @@ Read in a surface.
 mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
 
 gg <- Surface(mapfile2, "Montara")
+
+gg
 ```
 ## Lower level usage 
 
@@ -92,6 +94,7 @@ print(tab)
 ```
 
 All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available. 
+
 NOTE: this will be merged with mdsumnner/dplrodbc in some way.  Was originally called RforManifold. 
 
 
