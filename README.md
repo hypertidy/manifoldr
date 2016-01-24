@@ -80,6 +80,8 @@ Unfortunately this must be done separately for points lines or areas, for now. F
 Read in a surface.
 
 ``` r
+library(raster)
+#> Loading required package: sp
 mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
 
 gg <- Surface(mapfile2, "Montara")
@@ -93,6 +95,38 @@ gg
 #> data source : in memory
 #> names       : layer 
 #> values      : -1, 1931  (min, max)
+```
+
+Read in an image.
+
+``` r
+mapfile3 <- system.file("extdata", "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km.map", package= "manifoldr")
+im <- Image(mapfile3, "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km")
+plotRGB(im)
+```
+
+![](README-unnamed-chunk-4-1.png)
+
+``` r
+im
+#> class       : RasterBrick 
+#> dimensions  : 1081, 2159, 2333879, 3  (nrow, ncol, ncell, nlayers)
+#> resolution  : 0.08333333, 0.08333333  (x, y)
+#> extent      : 0.08332613, 180, -90, 0.08332973  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
+#> data source : in memory
+#> names       : layer.1, layer.2, layer.3 
+#> min values  :       0,       0,       0 
+#> max values  :     255,     255,     255
+```
+
+Build a custom object with SQL
+------------------------------
+
+``` r
+mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+
+x <- manifoldr:::readmfd(mapfile, "Drawing",  query = "SELECT [Name], [Branches (I)], [X (I)] FROM [Drawing] WHERE isArea([ID]) ORDER BY [NAME]", spatial = FALSE)
 ```
 
 Lower level usage

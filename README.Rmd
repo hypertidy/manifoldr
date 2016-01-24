@@ -72,11 +72,32 @@ Unfortunately this must be done separately for points lines or areas, for now. F
 Read in a surface. 
 
 ```{r}
+library(raster)
 mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
 
 gg <- Surface(mapfile2, "Montara")
 
 gg
+```
+
+Read in an image. 
+
+```{r}
+mapfile3 <- system.file("extdata", "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km.map", package= "manifoldr")
+im <- Image(mapfile3, "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km")
+plotRGB(im)
+im
+```
+
+## Build a custom object with SQL
+
+
+```{r}
+mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+
+x <- manifoldr:::readmfd(mapfile, "Drawing",  query = "SELECT [Name], [Branches (I)], [X (I)] FROM [Drawing] WHERE isArea([ID]) ORDER BY [NAME]", spatial = FALSE)
+
+
 ```
 ## Lower level usage 
 

@@ -10,6 +10,9 @@ manifoldDrawingCRS <- function(connection, componentname) {
 \usage{
 wktCRS2proj4(CRS)
 }
+\arguments{
+\item{CRS}{coordinate reference system in WKT form}
+}
 \description{
 #' @importFrom RODBC sqlQuery
 manifoldRasterCRS <- function(connection, componentname) {

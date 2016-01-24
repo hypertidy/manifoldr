@@ -211,6 +211,46 @@ crswkt <- manifoldCRS(con, rastername)
 }
 
 
+#' Read an Image from a Manifold project file. 
+#'
+#' For now we are assuming we just get an RGB 3-layer object. 
+#' 
+#' @param mapfile Manifold project file
+#' @param rastername Image name to read 
+#'
+#' @return RasterBrick
+#' @export
+#'
+#' @examples
+#' fmap <- "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km.map"
+#' mapfile <- system.file("extdata", fmap, package= "manifoldr")
+#' im <- Image(mapfile, "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km")
+#' @importFrom raster brick extent ncol nrow raster setValues
+Image <- function(mapfile, rastername) {
+  if (!requireNamespace("raster", quietly = TRUE)) {
+    stop("raster package not available, please install it with install.packages(\"raster\")")
+  } else {
+    if (!"raster" %in% .packages()) {
+      if (interactive()) {warning("raster package is loaded but not attached, you'll need to run library(\"raster\") to use it") }
+    }
+  }
+  on.exit(.cleanup(con))
+  # if (!checkAvailability()) {stop("Manifold is not installed, but is required for connection to project files.")}
+  con <- odbcConnectManifold(mapfile)
+  
+  row1 <- sqlQuery(con, sprintf("SELECT TOP 1 * FROM [%s]", rastername))
+  zz <- sqlQuery(con, sprintf("SELECT [Red (I)], [Green (I)], [Blue (I)] FROM [%s]", rastername))
+  georef <- getGeoref(con, rastername)
+  crswkt <- manifoldCRS(con, rastername)
+  #print(crswkt)
+  crs <- wktCRS2proj4(crswkt)
+  #  print(crs)
+  #crs <- NA_character_
+  r0 <- rasterFromManifoldGeoref(georef, crs)
+  setValues(brick(r0, r0, r0), cbind(zz[[1]], zz[[2]], zz[[3]]))
+}
+
+
 getGeoref <- function(con, rastername) {
   sqlQuery(con, sprintf("SELECT TOP 1 [Easting (I)] AS [xmin],  [Northing (I)] AS [ymax], PixelsByX([%s]) AS [ncol], PixelsByY([%s]) AS [nrow], 
                         PixelWidth([%s]) AS [dx], PixelHeight([%s]) AS [dy] FROM [%s]", rastername, rastername, rastername, rastername, rastername))
@@ -260,6 +300,8 @@ manifoldCRS <- function(connection, componentname) {
 #'   RODBC::sqlQuery(connection, qu, stringsAsFactors = FALSE)$CRS
 #' }
 
+#' @param CRS coordinate reference system in WKT form
+#'
 #' @rawNamespace 
 #' if ( packageVersion("rgdal") >= "1.1.4") {
 #' importFrom("rgdal", showP4)
