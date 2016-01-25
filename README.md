@@ -20,16 +20,18 @@ devtools::install_github("mdsumner/manifoldr")
 
 (Future versions may become available on CRAN. )
 
-NOTE:
------
+NOTES:
+------
 
 -   The ODBC driver for Manifold is *read-only*, so we cannot modify the contents of an existing file.
 
-Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error like this:
+-   Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error seen below. If you see this, and you want to save your changes you must choose "Yes", and save the file to a new location. There is no other option that I know of:
 
 ![alt text](inst/extdata/openCon.png)
 
-If you see this, and you want to save your changes you must choose "Yes", and save the file to a new location. There is no other option that I know of.
+-   Drawings that use a Local Scale different from 1.0 and/or a Local Offset different from 0.0 will not be read with correct geometry. I'm not sure how to work through this yet.
+
+-   There are many issues with the conversion from Manifold to WKT or PROJ.4 strings, there's a lot of work to do here.
 
 Basic Usage
 -----------
