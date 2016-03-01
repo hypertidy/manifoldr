@@ -1,8 +1,17 @@
 
-
+#' manifoldr-internal
+#' 
+#' @param dsn 
+#'
+#' @param table 
+#' @param WHERE 
+#' @param spatial 
+#' @param topol 
+#' @param crs NULL by default, can pass in NA_character_ to avoid CRS complaints
+#' @rdname manifoldr-internal
 #' @importFrom wkb readWKB
 #' @importFrom sp CRS proj4string<- SpatialPolygonsDataFrame SpatialLinesDataFrame SpatialPointsDataFrame
-readmfd <- function(dsn, table, WHERE = NULL, spatial = FALSE, topol = c("area", "line", "point")) {
+readmfd <- function(dsn, table, WHERE = NULL, spatial = FALSE, topol = c("area", "line", "point"), crs = NULL) {
 
   topol <- match.arg(topol)
   on.exit(.cleanup(con))
@@ -21,7 +30,9 @@ readmfd <- function(dsn, table, WHERE = NULL, spatial = FALSE, topol = c("area",
     randomstring <- paste(sample(c(letters, 1:9), 15, replace = TRUE), collapse = "")
     atts <- sprintf("%s, CGeomWKB(Geom(ID)) AS [%s]", paste(attributes, collapse = ","), randomstring)
     crswkt <- manifoldCRS(con, table)
-    crs <- wktCRS2proj4(crswkt)
+    if (is.null(crs)) {
+      crs <- wktCRS2proj4(crswkt)
+    }
    # print(crswkt)
   #  print(crs)
   }
