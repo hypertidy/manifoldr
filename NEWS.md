@@ -1,4 +1,6 @@
-# manifold 0.0.4.90001
+# manifoldr dev
+
+* added logic for WHERE argument to add clauses with AND to internal readmfd
 
 
 # manifoldr 0.0.4

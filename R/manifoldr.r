@@ -1,7 +1,8 @@
 
+
 #' @importFrom wkb readWKB
 #' @importFrom sp CRS proj4string<- SpatialPolygonsDataFrame SpatialLinesDataFrame SpatialPointsDataFrame
-readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area", "line", "point")) {
+readmfd <- function(dsn, table, WHERE = NULL, spatial = FALSE, topol = c("area", "line", "point")) {
 
   topol <- match.arg(topol)
   on.exit(.cleanup(con))
@@ -24,10 +25,13 @@ readmfd <- function(dsn, table, query = NULL, spatial = FALSE, topol = c("area",
    # print(crswkt)
   #  print(crs)
   }
-  if (is.null(query)) {
-    query <- sprintf("SELECT %s FROM [%s] WHERE %s", atts, table, topolclause(topol))
-  }
-#  print(query)
+  #if (is.null(query)) {
+  if (is.null(WHERE)) WHERE <- "" else WHERE <- sprintf("AND %s", WHERE)
+  topolclausestring <- topolclause(topol)
+    query <- sprintf("SELECT %s FROM [%s] WHERE %s %s", atts, table, topolclausestring, WHERE)
+  #}
+    
+  #print(query)
   
   #return(query)
  x <-  RODBC::sqlQuery(con, query)

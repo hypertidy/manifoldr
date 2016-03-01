@@ -12,3 +12,13 @@ test_that("we can read a drawing table", {
 test_that("we can read a raster", {
   expect_that(manifoldr::Surface(montarafile, "Montara"), is_a("RasterLayer"))
 })
+
+test_that("we can issue simple queries", {
+  expect_that(manifoldr:::readmfd(mapfile, "Drawing"), is_a("data.frame"))
+ 
+  expect_that(manifoldr:::readmfd(mapfile, "Drawing", spatial = TRUE), is_a("SpatialPolygonsDataFrame")) 
+  expect_that(manifoldr:::readmfd(mapfile, "Drawing", spatial = TRUE, topol = "point"), is_a("SpatialPointsDataFrame")) 
+  
+  expect_that(manifoldr:::readmfd(mapfile, "Drawing", spatial = TRUE, WHERE = "[Name] = \"E\""), is_a("SpatialPolygonsDataFrame")) 
+  
+})
