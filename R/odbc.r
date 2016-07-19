@@ -68,6 +68,58 @@ odbcConnectManifold <- function (mapfile, unicode = TRUE, ansi = FALSE, opengis 
   
 }
 
+#' ManifoldODBCDriver and methods.
+#'
+#' @export
+#' @keywords internal 
+setClass("ManifoldODBCDriver", contains = "DBIDriver")
+
+#' Generate an object of ManifoldODBCDriver class
+#' @rdname ManifoldODBCDriver-class
+#' @export
+ManifoldODBC <- function() {new("ManifoldODBCDriver")}
+
+#' Class ODBCConnection.
+#'
+#' \code{ODBCConnection} objects are usually created by \code{\link[DBI]{dbConnect}}
+#' @keywords internal
+#' @export
+setClass(
+  "ManifoldODBCConnection",
+  contains="ODBCConnection"
+)
+
+#' Connect/disconnect to a ODBC data source
+#'
+#' These methods are straight-forward implementations of the corresponding generic functions.
+#'
+#' @param drv an object of class ODBCDriver
+#' @param dsn Data source name you defined by ODBC data source administrator tool.
+#' @param user User name to connect as.
+#' @param password Password to be used if the DSN demands password authentication.
+#' @param ... Other parameters passed on to methods
+#' @import methods
+#' @import DBI
+#' @export
+setMethod(
+  "dbConnect",
+  "ManifoldODBCDriver",
+  function(drv, dsn, user = NULL, password = NULL, ...){
+    connection <- odbcConnectManifold(dsn, ...)
+    new("ManifoldODBCConnection", odbc=connection)
+  }
+)
+
+setMethod("dbReadTable", c("ManifoldODBCConnection", "character"), function(conn, name, row.names = NA, check.names = TRUE, select.cols = "*") {
+  qu <- sprintf("SELECT %s FROM [%s]", select.cols,  name)
+  print(qu)
+  out <- dbGetQuery(conn, qu, row.names = row.names)
+  if (check.names) {
+    names(out) <- make.names(names(out), unique = TRUE)
+  }  
+  out
+})
+
 
 .cleanup <- function(x) {
   if (x > -1) RODBC::odbcClose(x)
