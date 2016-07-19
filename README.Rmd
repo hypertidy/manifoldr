@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 
 Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically create new tables. 
 
+**NOTE:** there's a branch "odbconnect" that awaits DBI compliance for ODBC. Previously got this working in dplyrodbc, but there's too much to fix - e.g. the surround quoting "[" for tables is not done in RODBCDBI. 
 
 ## Installation
 
@@ -105,7 +106,7 @@ x <- manifoldr:::readmfd(mapfile, "Drawing",  query = "SELECT [Name], [Branches 
 
 Open a connection to a built-in .map file and issue a query.  
 
-```{r}
+```{r,eval=FALSE}
 library(manifoldr)
 library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
