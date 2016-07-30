@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/mdsumner/manifoldr.svg?branch=master)](https://travis-ci.org/mdsumner/manifoldr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mdsumner/manifoldr?branch=master&svg=true)](https://ci.appveyor.com/project/mdsumner/manifoldr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/manifoldr)](https://cran.r-project.org/package=manifoldr) [![Coverage Status](https://img.shields.io/codecov/c/github/mdsumner/manifoldr/master.svg)](https://codecov.io/github/mdsumner/manifoldr?branch=master)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 manifoldr
 =========
@@ -47,38 +49,6 @@ tab <- sqlQuery(con, "SELECT [ID], [Name], BranchCount([ID]) AS [nBranch] FROM [
 close(con)
 
 print(tab)
-#>    ID Name nBranch
-#> 1  10    L       1
-#> 2  11    E       1
-#> 3  12    G       1
-#> 4  13    I       1
-#> 5  15    N       1
-#> 6  22            1
-#> 7  24            1
-#> 8  26    O       1
-#> 9  27            1
-#> 10 28            1
-#> 11 29            1
-#> 12 30            1
-#> 13 31            1
-#> 14 32            1
-#> 15 33            1
-#> 16 34            1
-#> 17 35            1
-#> 18 36            1
-#> 19 37            1
-#> 20 38            1
-#> 21 39            1
-#> 22 40            1
-#> 23 41            1
-#> 24 42            1
-#> 25 43            1
-#> 26 44            1
-#> 27 45            1
-#> 28 46            1
-#> 29 47            1
-#> 30 48            1
-#> 31 14    O       2
 ```
 
 All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available. NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
@@ -105,44 +75,7 @@ There are lots of other pathways, including GDAL as a third/fourth party and via
 Examples
 --------
 
-### Manifold geometry via RODBC
-
-We can read from Manifold map files using a bit of SQL and the wkb R package.
-
-``` r
-## extensions we need
-library(wkb)    ## for parsing WKB blobs as Spatial R objects
-library(sp)     ## Spatial R objects
-library(RODBC)  ## ODBC in R
-library(raster) ## just for nice print methods for sp objects
-library(manifoldr)
-## open a connection to a map file
-## original  file has Local Scale 0.0001, so I use a modified copy "Provinces_"
-con <- odbcConnectManifold("E:\\ManifoldDVD\\Data\\World\\Medium Resolution\\World Provinces.map")
-## list the available tables if needed
-##sqlTables(con)
-
-## read in just the ID and the Geom (I) as WKB 
-## (Manifold's Geom includes the CRS so we cast to OGC using CGeomWKB)
-## remember this is just a data.frame
-ProvincesGeom <- sqlQuery(con, "SELECT [ID], [Country], [Province], CGeomWKB(Geom(ID)) AS [geom] FROM [Provinces_] WHERE [Longitude (I)] > 100 AND [Latitude (I)] < 0")
-## get the CRS (somehow)
-## . . .
-close(con)
-
-## construct an R spatial object from the raw geometry
-## this is just SpatialPolygons/Lines/Points (what happens to mixed geom layers?)
-Rsp <- readWKB(ProvincesGeom$geom)
-
-## reconstruct our original layer
-Countries <- SpatialPolygonsDataFrame(Rsp, subset(ProvincesGeom, select = c("ID", "Country", "Province")))
-Countries
-
-plot(Countries)
-devtools::session_info()
-```
-
-\`\`
+See the package vignettes for examples.
 
 TODO
 ----

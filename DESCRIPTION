@@ -3,9 +3,9 @@ Title: Facilities for Manifold System
 Version: 0.0.3.9001
 Authors@R: person("Michael", "Sumner", email = "mdsumner@gmail.com", role = c("aut", "cre"))
 Description: Connect to and read from Manifold System (a Geographic Information System). 
-Depends: 
+Depends:
     R (>= 3.2.0)
-Imports: 
+Imports:
     RODBC, maptools, methods, rgdal, rgeos, sp
 License: GPL-3
 LazyData: true
@@ -13,5 +13,6 @@ SystemRequirements: Windows-only, with a Manifold System installation (http://ww
 RoxygenNote: 5.0.1
 Suggests: testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 VignetteBuilder: knitr

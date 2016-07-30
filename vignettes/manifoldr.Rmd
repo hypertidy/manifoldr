@@ -1,22 +1,14 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+title: "manifoldr: R for Manifold GIS"
+author: "Michael D. Sumner"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Manifold GIS from R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-[![Travis-CI Build Status](https://travis-ci.org/mdsumner/manifoldr.svg?branch=master)](https://travis-ci.org/mdsumner/manifoldr)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mdsumner/manifoldr?branch=master&svg=true)](https://ci.appveyor.com/project/mdsumner/manifoldr)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/manifoldr)](https://cran.r-project.org/package=manifoldr)
-[![Coverage Status](https://img.shields.io/codecov/c/github/mdsumner/manifoldr/master.svg)](https://codecov.io/github/mdsumner/manifoldr?branch=master)
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
-)
-```
 # manifoldr
 
 Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically created new tables. 
@@ -52,7 +44,7 @@ devtools::install_github("mdsumner/manifoldr")
 
 Open a connection to a built-in .map file and issue a query.  
 
-```{r,eval=FALSE}
+```{r}
 library(manifoldr)
 library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
@@ -89,19 +81,42 @@ There are lots of other pathways, including GDAL as a third/fourth party and via
 
 ## Examples
 
-See the package vignettes for examples. 
+### Manifold geometry via RODBC
 
+We can read from Manifold map files using a bit of SQL and the wkb R package. 
 
-## TODO
+```{r,message=FALSE,warning=FALSE, eval=FALSE}
+## extensions we need
+library(wkb)    ## for parsing WKB blobs as Spatial R objects
+library(sp)     ## Spatial R objects
+library(RODBC)  ## ODBC in R
+library(raster) ## just for nice print methods for sp objects
+library(manifoldr)
+## open a connection to a map file
+## original  file has Local Scale 0.0001, so I use a modified copy "Provinces_"
+con <- odbcConnectManifold("E:\\ManifoldDVD\\Data\\World\\Medium Resolution\\World Provinces.map")
+## list the available tables if needed
+##sqlTables(con)
 
-* illustrate this example in both  R and Manifold 
+## read in just the ID and the Geom (I) as WKB 
+## (Manifold's Geom includes the CRS so we cast to OGC using CGeomWKB)
+## remember this is just a data.frame
+ProvincesGeom <- sqlQuery(con, "SELECT [ID], [Country], [Province], CGeomWKB(Geom(ID)) AS [geom] FROM [Provinces_] WHERE [Longitude (I)] > 100 AND [Latitude (I)] < 0")
+## get the CRS (somehow)
+## . . .
+close(con)
 
-https://github.com/mdsumner/talks/blob/master/SQL_3/SQL_3.rmd
+## construct an R spatial object from the raw geometry
+## this is just SpatialPolygons/Lines/Points (what happens to mixed geom layers?)
+Rsp <- readWKB(ProvincesGeom$geom)
 
-* dig up the RODBC reader https://github.com/mdsumner/mdsutils/blob/master/R/odbcReadManifold.R
+## reconstruct our original layer
+Countries <- SpatialPolygonsDataFrame(Rsp, subset(ProvincesGeom, select = c("ID", "Country", "Province")))
+Countries
 
-* get rClr working with Manifold: install from here https://github.com/jmp75/rClr
+plot(Countries)
+devtools::session_info()
+```
 
-* parallel CGAL triangulation code with Manifold's DecomposeToTrianglesAdv
+``
 
-* https://github.com/mdsumner/dplyrodbc
