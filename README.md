@@ -4,15 +4,9 @@
 manifoldr
 =========
 
-Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically created new tables.
+Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically create new tables.
 
-NOTE: The ODBC driver for Manifold is *read-only*, so we cannot modify the contents of an existing file.
-
-Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error like this:
-
-![alt text](inst/extdata/openCon.png)
-
-If you see this, and you want to save your changes you must choose "Yes", and save the file to a new location. There is no other option that I know of.
+**NOTE:** there's a branch "odbconnect" that awaits DBI compliance for ODBC. Previously got this working in dplyrodbc, but there's too much to fix - e.g. the surround quoting "\[" for tables is not done in RODBCDBI.
 
 Installation
 ------------
@@ -30,28 +24,22 @@ devtools::install_github("mdsumner/manifoldr")
 
 (Future versions may become available on CRAN. )
 
-Problems
---------
+NOTES:
+------
 
--   Large Geoms and other binary types are stored as the `ODBC_binary` type from the `RODBC` package. Be careful with these columns as they do not have compact printing methods. This is something to added to a future version of this package.
+-   The ODBC driver for Manifold is *read-only*, so we cannot modify the contents of an existing file.
 
-Basic Usage
------------
+-   Please take care not to modify a Manifold project while an R session has a open connection to it. If you try to save such a project, you will get an error seen below. If you see this, and you want to save your changes you must choose "Yes", and save the file to a new location. There is no other option that I know of:
 
-Open a connection to a built-in .map file and issue a query.
+![alt text](inst/extdata/openCon.png)
 
-``` r
-library(manifoldr)
-library(RODBC)
-mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
-con <- odbcConnectManifold(mapfile)
-tab <- sqlQuery(con, "SELECT [ID], [Name], BranchCount([ID]) AS [nBranch] FROM [Drawing] ORDER BY [nBranch]")
-close(con)
+-   Drawings that use a Local Scale different from 1.0 and/or a Local Offset different from 0.0 will not be read with correct geometry. I'm not sure how to work through this yet.
 
-print(tab)
-```
+-   There are many issues with the conversion from Manifold to WKT or PROJ.4 strings, there's a lot of work to do here.
 
-All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available. NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
+All the [standard Manifold SQL](http://www.georeference.org/doc/manifold.htm#sql_in_manifold_system.htm) is available.
+
+NOTE: this will be merged with mdsumnner/dplrodbc in some way. Was originally called RforManifold.
 
 Manifold GIS and R make for a powerful partnership, but the coupling between them has been relatively loose and sketchy.
 
@@ -76,6 +64,11 @@ Examples
 --------
 
 See the package vignettes for examples.
+
+Problems
+--------
+
+-   Large Geoms and other binary types are stored as the `ODBC_binary` type from the `RODBC` package. Be careful with these columns as they do not have compact printing methods. This is something to added to a future version of this package.
 
 TODO
 ----

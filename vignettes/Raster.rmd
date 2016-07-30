@@ -15,15 +15,11 @@ library(rgl)
 library(gris)
 ```
 
-The georeferencing is not right yet, but the plot is good. 
-
-Promising things ahead. 
 
 ## Rasters from Manifold via ODBC
 
 ```{r}
 library(manifoldr)
-library(RODBC)
 library(raster)
 mapfile <- system.file("extdata", "Montara_20m.map", package = "manifoldr")
 

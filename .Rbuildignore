@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README.Rmd$
-^README-unnamed-chunk-.*\.png
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
