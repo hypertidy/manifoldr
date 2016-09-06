@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Function reference. manifoldr 0.0.5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">manifoldr 0.0.5</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <div class="row">
+  <div class="span8">
+    <h2>Function reference</h2>
+
+    <h3></h3>
+    
+
+    <ul class="index">
+        
+      <li>
+        <code><a href="DrawingA.html">DrawingA</a></code>(DrawingL, DrawingP)<br />Read a Drawing from a Manifold project.</li>
+            
+      <li>
+        <code><a href="Image.html">Image</a></code><br />Read an Image from a Manifold project file.</li>
+            
+      <li>
+        <code><a href="odbcConnectManifold.html">odbcConnectManifold</a></code><br />ODBC connection to Manifold map files.</li>
+            
+      <li>
+        <code><a href="manifoldr-internal.html">readmfd</a></code><br />manifoldr-internal</li>
+            
+      <li>
+        <code><a href="Surface.html">Surface</a></code><br />Read a Surface from a Manifold project file.</li>
+            
+      <li>
+        <code><a href="wktCRS2proj4.html">wktCRS2proj4</a></code><br />#&#39; @importFrom RODBC sqlQuery
+manifoldDrawingCRS &lt;- function(connection, componentname) 
+   qu &lt;- sprintf(&#39;SELECT TOP 1 CoordSysToWKT(CCoordSys([Geom (I)])) AS [CRS] FROM [
+  RODBC::sqlQuery(connection, qu, stringsAsFactors = FALSE)$CRS
+</li>
+    
+    </ul>
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

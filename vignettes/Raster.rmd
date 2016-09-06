@@ -62,8 +62,6 @@ rglwidget(elementId="Montara", width = 700, height = 700)
 ```
 
 
-Why is the quad model so heavy in the browser? 
-
 
 
 

@@ -60,8 +60,9 @@ im
 
 ## Build a custom object with SQL
 
+TBD
 
-```{r}
+```{r, eval = FALSE, include =FALSE}
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 
 x <- manifoldr:::readmfd(mapfile, "Drawing",  query = "SELECT [Name], [Branches (I)], [X (I)] FROM [Drawing] WHERE isArea([ID]) ORDER BY [NAME]", spatial = FALSE)
@@ -72,7 +73,9 @@ x <- manifoldr:::readmfd(mapfile, "Drawing",  query = "SELECT [Name], [Branches 
 
 Open a connection to a built-in .map file and issue a query.  
 
-```{r,eval=FALSE}
+TBD
+
+```{r, eval = FALSE, include =FALSE}
 library(manifoldr)
 library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")

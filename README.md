@@ -1,5 +1,3 @@
-[![Travis-CI Build Status](https://travis-ci.org/mdsumner/manifoldr.svg?branch=master)](https://travis-ci.org/mdsumner/manifoldr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mdsumner/manifoldr?branch=master&svg=true)](https://ci.appveyor.com/project/mdsumner/manifoldr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/manifoldr)](https://cran.r-project.org/package=manifoldr) [![Coverage Status](https://img.shields.io/codecov/c/github/mdsumner/manifoldr/master.svg)](https://codecov.io/github/mdsumner/manifoldr?branch=master)
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 manifoldr
 =========
