@@ -51,9 +51,11 @@
 mapfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"AreaDrawing.map"</span>, <span class="dt">package =</span> <span class="st">"manifoldr"</span>)
 
 dwg &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Drawing.html">Drawing</a></span>(mapfile, <span class="dt">quiet =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<pre><code>## [1] "choosing table [Drawing Table] from: "
+<pre><code>## [1] "choosing first table [Drawing Table] from: "
 ## [1] "Drawing Table,GEOMETRY_COLUMNS,SPATIAL_REFERENCE_SYSTEMS"
-## [1] "SELECT [ID],[Name], CGeomWKB(Geom(ID)) AS [geom] FROM [Drawing Table] "</code></pre>
+## [1] "PROJCS[\"unnamed\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\", SPHEROID[\"WGS_1984\",6.378137e6,2.9825722356300156e2]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Azimuthal_Equal_Area\"],PARAMETER[\"False_Easting\",0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Longitude_Of_Center\",0],PARAMETER[\"Latitude_Of_Center\",0],PARAMETER[\"Scale_Factor\",1],UNIT[\"Meter\",1.0]]"
+## [1] "+proj=laea +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs "
+## [1] "SELECT * FROM (SELECT [ID],[Name], CGeomWKB(Geom(ID)) AS [geom] FROM [Drawing Table] ) WHERE [geom] IS NOT NULL"</code></pre>
 </div>
 <div id="basic-usage-for-the-spatial-classes-legacy" class="section level2">
 <h2>Basic Usage for the Spatial classes (legacy)</h2>

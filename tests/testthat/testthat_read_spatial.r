@@ -1,5 +1,5 @@
 context("Read data in as spatial")
-
+?testthat::skip_on_travis()
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 montarafile <- system.file("extdata", "MONTARA_20m.map", package = "manifoldr")
 test_that("we can read a drawing table", {

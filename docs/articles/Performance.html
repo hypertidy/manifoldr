@@ -46,7 +46,8 @@
 <span class="kw">library</span>(manifoldr)
 <span class="kw">library</span>(rbenchmark)
 <span class="kw">benchmark</span>(<span class="dt">readmfd =</span>  manifoldr:::<span class="kw"><a href="../reference/readmfd.html">readmfd</a></span>(f, <span class="st">"Drawing"</span>), 
-          <span class="dt">spatial =</span> manifoldr:::<span class="kw"><a href="../reference/readmfd.html">readmfd</a></span>(f, <span class="st">"Drawing"</span>), <span class="dt">replications =</span> <span class="dv">4</span>)
+          <span class="dt">spatial =</span> manifoldr:::<span class="kw"><a href="../reference/readmfd.html">readmfd</a></span>(f, <span class="st">"Drawing"</span>),
+          <span class="dt">sf =</span> manifoldr::<span class="kw"><a href="../reference/Drawing.html">Drawing</a></span>(f, <span class="st">"Drawing"</span>), <span class="dt">replications =</span> <span class="dv">4</span>)
 
 a &lt;-<span class="st"> </span><span class="kw">profr</span>(manifoldr:::<span class="kw"><a href="../reference/readmfd.html">readmfd</a></span>(f, <span class="st">"Drawing"</span>))</code></pre></div>
 <div id="timings" class="section level1">
