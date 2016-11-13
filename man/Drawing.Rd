@@ -22,5 +22,6 @@ mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 dwg  <- Drawing(mapfile, "Drawing")
 ## only lines
 dwg_sub <- Drawing(mapfile, WHERE = "WHERE [Type (I)] = 2")
+dwg_sub
 }
 

@@ -14,7 +14,8 @@ f <- file.path(dp, "Data\\World\\Low Resolution\\Continents and Oceans lowres.ma
 library(manifoldr)
 library(rbenchmark)
 benchmark(readmfd =  manifoldr:::readmfd(f, "Drawing"), 
-          spatial = manifoldr:::readmfd(f, "Drawing"), replications = 4)
+          spatial = manifoldr:::readmfd(f, "Drawing"),
+          sf = manifoldr::Drawing(f, "Drawing"), replications = 4)
 
 a <- profr(manifoldr:::readmfd(f, "Drawing"))
 ```
