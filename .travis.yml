@@ -30,3 +30,5 @@ r_packages:
   - rgeos
 r_binary_packages:
   - RODBC
+  - rgeos
+
