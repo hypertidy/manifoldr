@@ -12,6 +12,7 @@ test_that("fake file does not exist", {
 })
 
 test_that("connection is successful", {
+    testthat::skip_on_travis()
   if (manifoldr:::checkAvailability()) {
   expect_that(odbcConnectManifold(mapfile), is_a("RODBC"))
   } else {
