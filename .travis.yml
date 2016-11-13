@@ -27,3 +27,6 @@ before_install:
 r_packages:
   - rgdal
   - sf
+  
+r_binary_packages:
+  - RODBC
