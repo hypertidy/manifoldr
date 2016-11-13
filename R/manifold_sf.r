@@ -83,8 +83,11 @@ mfd_read_db <- function(con = NULL, table,
     
     query <- sprintf("SELECT %s FROM [%s] %s", atts, table,  WHERE)
     #if (dropNULL) {
+     ## drop any empty ones in Manifold
    query <- sprintf("SELECT * FROM (%s) WHERE [%s] IS NOT NULL", query, geom_column)
   #  }
+     ## or return the empty as valid empty geometries
+   ## i.e st_multipolygon(list(), "XY")  
     if (verbose) print(query)
   x <-  RODBC::sqlQuery(con, query)
 
