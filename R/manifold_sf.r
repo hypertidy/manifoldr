@@ -39,6 +39,20 @@ query_mfd <- function(dsn, query) {
   }
   table
 }
+
+#' Read simple features from the Manifold driver
+#' 
+#' Read a drawing from a Manifold connection. 
+#' 
+#' By default the entire drawing is read with all non-intrinsic columns. The intrinsic column "Geom (I)" is
+#' cast to WKB within Manifold and then interpreted using \code{\link[sf]{st_as_sfc}}.
+#' @param con connection object
+#' @param table table to read, can be a Drawing name or its child table
+#' @param query query to run, optional
+#' @param geom_column this is the name of the column as returned (not the name of the column natively)
+#' @param WHERE optional WHERE clause, as in "WHERE ID = 1 AND size < 10"
+#' @param ... other arguments passed along (none currently)
+#' @param quiet keep quiet by default
 #' @export
 #' @importFrom sf st_as_sfc st_as_sf
 #' @importFrom RODBC sqlTables
@@ -52,10 +66,10 @@ mfd_read_db <- function(con = NULL, table,
    if (missing(table)) {
      table <- .choose_table(con, verbose)
    }
-   available_colnames <- manifoldr:::columnames(con, table)
-  crswkt <- manifoldr:::manifoldCRS(con, table)
+   available_colnames <- columnames(con, table)
+  crswkt <- manifoldCRS(con, table)
   if (verbose) print(crswkt)
-    crs <- manifoldr:::wktCRS2proj4(crswkt)
+    crs <- wktCRS2proj4(crswkt)
     if (verbose) print(crs)
    if (is.null(geom_column)) geom_column <- "geom"
     ## here we might use the OGC names, but it complicates things a bit trying to balance everything
@@ -68,12 +82,12 @@ mfd_read_db <- function(con = NULL, table,
     
     query <- sprintf("SELECT %s FROM [%s] %s", atts, table,  WHERE)
     #if (dropNULL) {
-   query <- sprintf("SELECT * FROM (%s) WHERE [geom] IS NOT NULL", query)
+   query <- sprintf("SELECT * FROM (%s) WHERE [%s] IS NOT NULL", query, geom_column)
   #  }
     if (verbose) print(query)
   x <-  RODBC::sqlQuery(con, query)
 
   x <- tibble::as_tibble(x)
-  x[["geom"]] <- sf::st_as_sfc(structure(x[["geom"]], class = "WKB"), EWKB = FALSE)
+  x[[geom_column]] <- sf::st_as_sfc(structure(x[[geom_column]], class = "WKB"), EWKB = FALSE)
   st_as_sf(x)
 }
