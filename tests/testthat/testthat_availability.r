@@ -24,11 +24,14 @@ test_that("failed connection is graceful", {
   expect_lt(odbcConnectManifold(fakefile), 0)
 })
 
+
 test_that("we can get out a table summary", {
+  testthat::skip_on_travis()
   expect_that(manifoldr:::mapcontents(mapfile), is_a("list"))
 })
 
 test_that("we can read a drawing table", {
+  testthat::skip_on_travis()
   expect_that(manifoldr:::readmfd(mapfile, "Drawing Table"), is_a("data.frame"))
   expect_that(manifoldr:::readmfd(mapfile, "Drawing Table", topol = "line", spatial = TRUE), is_a("SpatialLinesDataFrame"))
 })

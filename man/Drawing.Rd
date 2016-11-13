@@ -10,6 +10,8 @@ Drawing(mapfile, dwgname, ...)
 \item{mapfile}{Manifold project file}
 
 \item{dwgname}{Drawing name to read}
+
+\item{...}{passed on to \code{\link{mfd_read_db}}}
 }
 \value{
 Drawing returns a `sf` object

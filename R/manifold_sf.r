@@ -2,6 +2,7 @@
 #'
 #' @param mapfile Manifold project file
 #' @param dwgname Drawing name to read
+#' @param ... passed on to \code{\link{mfd_read_db}}
 #'
 #' @return Drawing returns a `sf` object
 #' @export
@@ -66,7 +67,7 @@ mfd_read_db <- function(con = NULL, table,
    if (missing(table)) {
      table <- .choose_table(con, verbose)
    }
-   available_colnames <- columnames(con, table)
+  available_colnames <- columnames(con, table)
   crswkt <- manifoldCRS(con, table)
   if (verbose) print(crswkt)
     crs <- wktCRS2proj4(crswkt)

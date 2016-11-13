@@ -8,15 +8,15 @@ readmfd(dsn, table, WHERE = NULL, spatial = FALSE, topol = c("area",
   "line", "point"), crs = NULL)
 }
 \arguments{
-\item{dsn}{}
+\item{dsn}{data source}
 
-\item{table}{}
+\item{table}{table name}
 
-\item{WHERE}{}
+\item{WHERE}{where clause/s}
 
-\item{spatial}{}
+\item{spatial}{true or false}
 
-\item{topol}{}
+\item{topol}{area, line, or point}
 
 \item{crs}{NULL by default, can pass in NA_character_ to avoid CRS complaints}
 }

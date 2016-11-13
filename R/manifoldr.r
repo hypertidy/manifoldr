@@ -1,12 +1,12 @@
 
 #' manifoldr-internal
 #' 
-#' @param dsn 
+#' @param dsn data source
 #'
-#' @param table 
-#' @param WHERE 
-#' @param spatial 
-#' @param topol 
+#' @param table table name
+#' @param WHERE where clause/s
+#' @param spatial true or false
+#' @param topol area, line, or point
 #' @param crs NULL by default, can pass in NA_character_ to avoid CRS complaints
 #' @rdname manifoldr-internal
 #' @importFrom wkb readWKB
