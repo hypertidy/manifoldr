@@ -9,10 +9,10 @@
 #' 
 #' @examples
 #' mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
-#' dwg  <- Drawing(mapfile, "Drawing")
+#' #dwg  <- Drawing(mapfile, "Drawing")
 #' ## only lines
-#' dwg_sub <- Drawing(mapfile, WHERE = "WHERE [Type (I)] = 2")
-#' dwg_sub
+#' #dwg_sub <- Drawing(mapfile, WHERE = "WHERE [Type (I)] = 2")
+#' #dwg_sub
 Drawing <- function(mapfile, dwgname, ...) {
   con <- odbcConnectManifold(mapfile)
   mfd_read_db(con, dwgname, ...)
