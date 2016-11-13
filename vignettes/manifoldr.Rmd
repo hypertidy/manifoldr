@@ -15,7 +15,7 @@ vignette: >
 
 Read in a drawing in **simple features for R** form. 
 
-```{r}
+```{r,eval=FALSE}
 library(manifoldr)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 
@@ -28,7 +28,7 @@ dwg <- Drawing(mapfile, quiet = FALSE)
 
 Read in a drawing. 
 
-```{r}
+```{r,eval=FALSE}
 library(manifoldr)
 library(RODBC)
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
@@ -50,7 +50,7 @@ Read in a surface.
 
 
 =======
-```{r}
+```{r,eval=FALSE}
 library(raster)
 mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
 
@@ -61,7 +61,7 @@ gg
 
 Read in an image. 
 
-```{r}
+```{r,eval=FALSE}
 mapfile3 <- system.file("extdata", "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km.map", package= "manifoldr")
 im <- Image(mapfile3, "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km")
 plotRGB(im)
