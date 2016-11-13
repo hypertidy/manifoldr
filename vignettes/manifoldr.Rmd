@@ -11,9 +11,19 @@ vignette: >
 
 # manifoldr
 
+## Basic usage
 
+Read in a drawing in **simple features for R** form. 
 
-## Basic Usage
+```{r}
+library(manifoldr)
+mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+
+dwg <- Drawing(mapfile, quiet = FALSE)
+
+```
+
+## Basic Usage for the Spatial classes (legacy)
 
 
 Read in a drawing. 

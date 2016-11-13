@@ -1,7 +1,7 @@
 
 # manifoldr dev
 
-* preparation for CRAN
+* new Drawing function returns a component in sf form
 
 # manifoldr 0.0.5
 
