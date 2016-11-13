@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/r-gris/manifoldr.svg?branch=master)](https://travis-ci.org/r-gris/manifoldr)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 manifoldr
 =========
@@ -14,9 +16,9 @@ Installation
 2.  `manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package.
 
 ``` r
-if (packageVersion("devtools") < 1.6) {
-  install.packages("devtools")
-}
+## install devtools if required
+##install.packages("devtools")
+
 devtools::install_github("mdsumner/manifoldr")
 ```
 
