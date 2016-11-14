@@ -19,6 +19,6 @@ Read a Surface from a Manifold project file.
 }
 \examples{
 mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
-gg <- Surface(mapfile2, "Montara")
+#gg <- Surface(mapfile2, "Montara")
 }
 

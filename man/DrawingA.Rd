@@ -25,13 +25,13 @@ Read a Drawing from a Manifold project.
 }
 \examples{
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
-geom2D <- DrawingA(mapfile, "Drawing")
-geom2D
+#geom2D <- DrawingA(mapfile, "Drawing")
+#geom2D
 
-geom1D <- DrawingL(mapfile, "Drawing")
-geom1D
+#geom1D <- DrawingL(mapfile, "Drawing")
+#geom1D
 
-geom0D <- DrawingP(mapfile, "Drawing")
-geom0D
+#geom0D <- DrawingP(mapfile, "Drawing")
+#geom0D
 }
 

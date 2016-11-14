@@ -20,6 +20,6 @@ For now we are assuming we just get an RGB 3-layer object.
 \examples{
 fmap <- "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km.map"
 mapfile <- system.file("extdata", fmap, package= "manifoldr")
-im <- Image(mapfile, "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km")
+#im <- Image(mapfile, "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km")
 }
 

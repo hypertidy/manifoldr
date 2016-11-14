@@ -13,16 +13,16 @@
 #' @examples
 #' \dontrun{
 #' f <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
-#' con <- odbcConnectManifold(f)
-#' tab <- RODBC::sqlQuery(con, "SELECT * FROM [Drawing]")
+#' #con <- odbcConnectManifold(f)
+#' #tab <- RODBC::sqlQuery(con, "SELECT * FROM [Drawing]")
 #' ## drop [Geom (I)] and give a summary
-#' summary(subset(tab, select = -`Geom (I)`))
+#' #summary(subset(tab, select = -`Geom (I)`))
 #' 
 #' ## issue a spatial query
 #' qtx <- "SELECT [ID], [Name], [Length (I)] AS [Perim], 
 #'      BranchCount([ID]) AS [nbranches] FROM [Drawing Table]"
-#' sq <- RODBC::sqlQuery(con, qtx)
-#' sq
+#' #sq <- RODBC::sqlQuery(con, qtx)
+#' #sq
 #' }
 #' @return RODBC object
 #' @importFrom RODBC odbcDriverConnect

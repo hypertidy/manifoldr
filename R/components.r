@@ -10,14 +10,14 @@
 #' 
 #' @examples
 #' mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
-#' geom2D <- DrawingA(mapfile, "Drawing")
-#' geom2D
+#' #geom2D <- DrawingA(mapfile, "Drawing")
+#' #geom2D
 #' 
-#' geom1D <- DrawingL(mapfile, "Drawing")
-#' geom1D
+#' #geom1D <- DrawingL(mapfile, "Drawing")
+#' #geom1D
 #' 
-#' geom0D <- DrawingP(mapfile, "Drawing")
-#' geom0D
+#' #geom0D <- DrawingP(mapfile, "Drawing")
+#' #geom0D
 DrawingA <- function(mapfile, dwgname) {
   
   readmfd(mapfile, dwgname, topol = "area", spatial = TRUE)
@@ -49,7 +49,7 @@ DrawingP <- function(mapfile, dwgname) {
 #'
 #' @examples
 #' mapfile2 <- system.file("extdata", "Montara_20m.map", package= "manifoldr")
-#' gg <- Surface(mapfile2, "Montara")
+#' #gg <- Surface(mapfile2, "Montara")
 #' @importFrom raster extent ncol nrow raster setValues
 Surface <- function(mapfile, rastername) {
   if (!requireNamespace("raster", quietly = TRUE)) {
@@ -88,7 +88,7 @@ Surface <- function(mapfile, rastername) {
 #' @examples
 #' fmap <- "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km.map"
 #' mapfile <- system.file("extdata", fmap, package= "manifoldr")
-#' im <- Image(mapfile, "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km")
+#' #im <- Image(mapfile, "V20160202016022.L3m_R3QL_NPP_CHL_chlor_a_9km")
 #' @importFrom raster brick extent ncol nrow raster setValues
 Image <- function(mapfile, rastername) {
   if (!requireNamespace("raster", quietly = TRUE)) {
