@@ -21,7 +21,7 @@ Read a Drawing from a Manifold project.
 }
 \examples{
 mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
-#dwg  <- Drawing(mapfile, "Drawing")
+dwg  <- Drawing(mapfile, "Drawing")
 ## only lines
 #dwg_sub <- Drawing(mapfile, WHERE = "WHERE [Type (I)] = 2")
 #dwg_sub

@@ -1,10 +1,10 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Performance"
+author: "Michael Sumner"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Manifoldr Performance}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,6 +20,27 @@ benchmark(readmfd =  manifoldr:::readmfd(f, "Drawing"),
 a <- profr(manifoldr:::readmfd(f, "Drawing"))
 ```
 
+
+```{r,eval=FALSE}
+system.time(tab <- Drawing("C:/data/cadastre/list_parcels_hobart.map"))
+#   user  system elapsed 
+#   7.59    1.03    8.76 
+system.time(x <- rgdal::readOGR("C:/data/cadastre/shp", "list_parcels_hobart"))
+#OGR data source with driver: ESRI Shapefile 
+#Source: "C:/data/cadastre/shp", layer: "list_parcels_hobart"
+#with 33611 features
+#It has 19 fields
+#Integer64 fields read as strings:  CID PID POT_PID 
+#   user  system elapsed 
+#  19.22    3.13   22.95 
+system.time(x <- rgdal::readOGR("C:/data/cadastre/tab", "list_parcels_hobart"))
+#OGR data source with driver: MapInfo File 
+#Source: "C:/data/cadastre/tab", layer: "list_parcels_hobart"
+#with 33611 features
+#It has 19 fields
+#   user  system elapsed 
+#  17.57    7.47   25.40 
+```
 
 
 

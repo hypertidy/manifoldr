@@ -6,7 +6,41 @@ manifoldr
 
 Manifoldr allows direct connection to Manifold .map projects from R via ODBC. We can read tables in full, or issue SQL queries to select or dynamically create new tables.
 
-**NOTE:** there's a branch "odbconnect" that awaits DBI compliance for ODBC. Previously got this working in dplyrodbc, but there's too much to fix - e.g. the surround quoting "\[" for tables is not done in RODBCDBI.
+``` r
+library(manifoldr)
+mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
+(x <- Drawing(mapfile))
+#> Simple feature collection with 31 features and 2 fields
+#> geometry type:  GEOMETRY
+#> dimension:      XY
+#> bbox:           xmin: -615.2802 ymin: -565.2889 xmax: 1334.871 ymax: 612.3995
+#> epsg (SRID):    NA
+#> proj4string:    NA
+#> First 20 features:
+#>    ID Name                       geometry
+#> 1  10    L POLYGON((-178 168, -169 -27...
+#> 2  11    E POLYGON((10 177, 11 167, 27...
+#> 3  12    G POLYGON((183.5 98, 199.5 -7...
+#> 4  13    I POLYGON((406.5 182, 413.5 -...
+#> 5  14    O POLYGON((513.5 142, 526.5 3...
+#> 6  15    N POLYGON((732.5 201, 754.5 -...
+#> 7  22      LINESTRING(-615.28015075376...
+#> 8  24      LINESTRING(1315.8756281407 ...
+#> 9  26    O               POINT(513.5 142)
+#> 10 27                     POINT(526.5 38)
+#> 11 28                    POINT(548.5 -21)
+#> 12 29                    POINT(634.5 -36)
+#> 13 30                    POINT(668.5 -17)
+#> 14 31                     POINT(687.5 38)
+#> 15 32                    POINT(687.5 122)
+#> 16 33                    POINT(682.5 161)
+#> 17 34                    POINT(660.5 189)
+#> 18 35                    POINT(628.5 200)
+#> 19 36                    POINT(576.5 199)
+#> 20 37                    POINT(551.5 183)
+```
+
+Exciting!
 
 Installation
 ------------
@@ -16,9 +50,9 @@ Installation
 2.  `manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package.
 
 ``` r
-## install devtools if required
-##install.packages("devtools")
-
+if (packageVersion("devtools") < 1.6) {
+  install.packages("devtools")
+}
 devtools::install_github("mdsumner/manifoldr")
 ```
 

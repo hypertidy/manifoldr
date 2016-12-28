@@ -9,12 +9,13 @@
 #' 
 #' @examples
 #' mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
-#' #dwg  <- Drawing(mapfile, "Drawing")
+#' dwg  <- Drawing(mapfile, "Drawing")
 #' ## only lines
 #' #dwg_sub <- Drawing(mapfile, WHERE = "WHERE [Type (I)] = 2")
 #' #dwg_sub
 Drawing <- function(mapfile, dwgname, ...) {
   con <- odbcConnectManifold(mapfile)
+  on.exit(close(con), add = TRUE)
   mfd_read_db(con, dwgname, ...)
 }
 
@@ -72,7 +73,7 @@ mfd_read_db <- function(con = NULL, table,
   if (verbose) print(crswkt)
     crs <- wktCRS2proj4(crswkt)
     if (verbose) print(crs)
-   if (is.null(geom_column)) geom_column <- "geom"
+   if (is.null(geom_column)) geom_column <- "geometry"
     ## here we might use the OGC names, but it complicates things a bit trying to balance everything
     ## geometry_columns is pretty useless getting the CRS and the actual table names as they appear in Manifold
     ## so forget it
@@ -91,7 +92,7 @@ mfd_read_db <- function(con = NULL, table,
     if (verbose) print(query)
   x <-  RODBC::sqlQuery(con, query)
 
-  x <- tibble::as_tibble(x)
-  x[[geom_column]] <- sf::st_as_sfc(structure(x[[geom_column]], class = "WKB"), EWKB = FALSE)
-  st_as_sf(x)
+  #x <- tibble::as_tibble(x)
+  x[[geom_column]] <- sf:::st_as_sfc.WKB(structure(x[[geom_column]], class = "WKB"), EWKB = FALSE)
+  sf::st_as_sf(x)
 }
