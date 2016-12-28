@@ -6,11 +6,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Drawing. manifoldr</title>
+<title>Read a Drawing from a Manifold project. — Drawing â€¢ manifoldr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -22,6 +21,7 @@
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
@@ -34,10 +34,9 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container template-reference-topic">
       <header>
-      
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -50,9 +49,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Home</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -62,63 +58,73 @@
   <a href="../news/index.html">News</a>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
+
       
       </header>
 
-      <div class="page-header">
-  <h1>Read a Drawing from a Manifold project.</h1>
-</div>
+      <div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Read a Drawing from a Manifold project.</h1>
+    </div>
 
-<div class="row">
-  <div class="col-md-9">
     
     <p>Read a Drawing from a Manifold project.</p>
     
 
     <pre><span class='fu'>Drawing</span>(<span class='no'>mapfile</span>, <span class='no'>dwgname</span>, <span class='no'>...</span>)</pre>
     
-    <h2>Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>mapfile</dt>
       <dd>Manifold project file</dd>
       <dt>dwgname</dt>
       <dd>Drawing name to read</dd>
+      <dt>...</dt>
+      <dd>passed on to <code><a href='mfd_read_db.html'>mfd_read_db</a></code></dd>
     </dl>
     
-    <div class="Value">
-      <h2>Value</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-      <p>Drawing returns a `sf` object</p>
-    </div>
+    <p>Drawing returns a `sf` object</p>
     
-    <h2 id="examples">Examples</h2>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mapfile</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"AreaDrawing.map"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"manifoldr"</span>)
 <span class='no'>dwg</span>  <span class='kw'>&lt;-</span> <span class='fu'>Drawing</span>(<span class='no'>mapfile</span>, <span class='st'>"Drawing"</span>)
 <span class='co'>## only lines</span>
-<span class='no'>dwg_sub</span> <span class='kw'>&lt;-</span> <span class='fu'>Drawing</span>(<span class='no'>mapfile</span>, <span class='kw'>WHERE</span> <span class='kw'>=</span> <span class='st'>"WHERE [Type (I)] = 2"</span>)
-<span class='no'>dwg_sub</span></div><div class='output co'>#&gt; Simple feature collection with 2 features and 2 fields
-#&gt; geometry type:  LINESTRING
-#&gt; dimension:      XY
-#&gt; bbox:           xmin: -615.2802 ymin: -565.2889 xmax: 1334.871 ymax: 612.3995
-#&gt; epsg (SRID):    NA
-#&gt; proj4string:    NA
-#&gt;   ID Name                           geom
-#&gt; 1 22   NA LINESTRING(-615.28015075376...
-#&gt; 2 24   NA LINESTRING(1315.8756281407 ...
-#&gt; </div></pre>
+<span class='co'>#dwg_sub &lt;- Drawing(mapfile, WHERE = "WHERE [Type (I)] = 2")</span>
+<span class='co'>#dwg_sub</span></div></pre>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
   </div>
 </div>
 
       <footer>
-      <p>Built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>. Styled with <a href="http://getbootstrap.com">Bootstrap 3</a>.</p>
+      <div class="copyright">
+  <p>Developed by Michael Sumner.</p>
+</div>
+
+<div class="pkgdown">
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+</div>
+
       </footer>
    </div>
 

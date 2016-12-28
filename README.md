@@ -16,7 +16,6 @@ mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 #> bbox:           xmin: -615.2802 ymin: -565.2889 xmax: 1334.871 ymax: 612.3995
 #> epsg (SRID):    NA
 #> proj4string:    NA
-#> First 20 features:
 #>    ID Name                       geometry
 #> 1  10    L POLYGON((-178 168, -169 -27...
 #> 2  11    E POLYGON((10 177, 11 167, 27...
@@ -38,6 +37,17 @@ mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 #> 18 35                    POINT(628.5 200)
 #> 19 36                    POINT(576.5 199)
 #> 20 37                    POINT(551.5 183)
+#> 21 38                    POINT(515.5 173)
+#> 22 39                     POINT(581.5 65)
+#> 23 40                    POINT(581.5 101)
+#> 24 41                    POINT(593.5 113)
+#> 25 42                    POINT(611.5 114)
+#> 26 43                    POINT(630.5 103)
+#> 27 44                     POINT(632.5 74)
+#> 28 45                     POINT(617.5 41)
+#> 29 46      POINT(-615.280150753769 473...
+#> 30 47      POINT(-536.134422110553 -53...
+#> 31 48      POINT(1091.10175879397 -565...
 ```
 
 Exciting!
@@ -45,7 +55,7 @@ Exciting!
 Installation
 ------------
 
-1.  `manifoldr` relies on [Manifold® System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working.
+1.  `manifoldr` relies on [ManifoldÂ® System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working.
 
 2.  `manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package.
 
