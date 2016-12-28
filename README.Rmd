@@ -25,6 +25,17 @@ mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 (x <- Drawing(mapfile))
 ```
 
+Note the mixed types which are now available in R via [sf]()
+
+Basic Manifold queries work, using the "WHERE" argument. 
+
+```{r}
+Drawing(mapfile, WHERE = "WHERE [Type (I)] = 2")
+
+Drawing(mapfile, WHERE = "WHERE IsLine(ID) AND [Length (I)] < 2500")
+```
+
+
 Exciting!
 
 ## Installation

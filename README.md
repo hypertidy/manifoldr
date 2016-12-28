@@ -16,6 +16,7 @@ mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 #> bbox:           xmin: -615.2802 ymin: -565.2889 xmax: 1334.871 ymax: 612.3995
 #> epsg (SRID):    NA
 #> proj4string:    NA
+#> First 20 features:
 #>    ID Name                       geometry
 #> 1  10    L POLYGON((-178 168, -169 -27...
 #> 2  11    E POLYGON((10 177, 11 167, 27...
@@ -37,17 +38,33 @@ mapfile <- system.file("extdata", "AreaDrawing.map", package = "manifoldr")
 #> 18 35                    POINT(628.5 200)
 #> 19 36                    POINT(576.5 199)
 #> 20 37                    POINT(551.5 183)
-#> 21 38                    POINT(515.5 173)
-#> 22 39                     POINT(581.5 65)
-#> 23 40                    POINT(581.5 101)
-#> 24 41                    POINT(593.5 113)
-#> 25 42                    POINT(611.5 114)
-#> 26 43                    POINT(630.5 103)
-#> 27 44                     POINT(632.5 74)
-#> 28 45                     POINT(617.5 41)
-#> 29 46      POINT(-615.280150753769 473...
-#> 30 47      POINT(-536.134422110553 -53...
-#> 31 48      POINT(1091.10175879397 -565...
+```
+
+Note the mixed types which are now available in R via [sf]()
+
+Basic Manifold queries work, using the "WHERE" argument.
+
+``` r
+Drawing(mapfile, WHERE = "WHERE [Type (I)] = 2")
+#> Simple feature collection with 2 features and 2 fields
+#> geometry type:  LINESTRING
+#> dimension:      XY
+#> bbox:           xmin: -615.2802 ymin: -565.2889 xmax: 1334.871 ymax: 612.3995
+#> epsg (SRID):    NA
+#> proj4string:    NA
+#>   ID Name                       geometry
+#> 1 22   NA LINESTRING(-615.28015075376...
+#> 2 24   NA LINESTRING(1315.8756281407 ...
+
+Drawing(mapfile, WHERE = "WHERE IsLine(ID) AND [Length (I)] < 2500")
+#> Simple feature collection with 1 feature and 2 fields
+#> geometry type:  LINESTRING
+#> dimension:      XY
+#> bbox:           xmin: -111.9133 ymin: -321.5201 xmax: 1334.871 ymax: 612.3995
+#> epsg (SRID):    NA
+#> proj4string:    NA
+#>   ID Name                       geometry
+#> 1 24   NA LINESTRING(1315.8756281407 ...
 ```
 
 Exciting!
@@ -55,7 +72,7 @@ Exciting!
 Installation
 ------------
 
-1.  `manifoldr` relies on [ManifoldÂ® System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working.
+1.  `manifoldr` relies on [Manifold® System](http://www.manifold.net) GIS, it's of no use if you don't have this installed and working.
 
 2.  `manifoldr` is only available from GitHub: the easiest way to install it is to use the `devtools` package.
 

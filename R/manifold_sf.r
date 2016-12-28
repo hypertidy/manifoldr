@@ -15,7 +15,6 @@
 #' #dwg_sub
 Drawing <- function(mapfile, dwgname, ...) {
   con <- odbcConnectManifold(mapfile)
-  on.exit(close(con), add = TRUE)
   mfd_read_db(con, dwgname, ...)
 }
 
